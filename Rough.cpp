@@ -1,154 +1,136 @@
-#include <iostream> 
-#include <vector> 
-#include <cstdlib> 
-#include <ctime> 
-#include <conio.h> // For _kbhit() and _getch() 
- 
-using namespace std; 
- 
-const int WIDTH = 10; 
-const int HEIGHT = 20; 
- 
-vector<vector<int>> board(HEIGHT, vector<int>(WIDTH, 0)); // Game board 
-int currentPiece[4][2]; // Current piece coordinates 
-int currentPieceType; 
- 
-// Tetrimino shapes 
-const int shapes[7][4][2] = { 
-    {{0, 1}, {1, 1}, {2, 1}, {1, 0}}, // T 
-    {{0, 1}, {1, 1}, {1, 0}, {1, 2}}, // J 
-    {{0, 1}, {1, 1}, {1, 0}, {2, 0}}, // L 
-    {{0, 0}, {0, 1}, {1, 0}, {1, 1}}, // O 
-    {{0, 1}, {1, 1}, {1, 0}, {2, 1}}, // S 
-    {{0, 0}, {0, 1}, {1, 1}, {1, 2}}, // Z 
-    {{0, 1}, {1, 1}, {2, 1}, {3, 1}}  // I 
-}; 
- 
-void drawBoard() { 
-    system("cls"); // Clear the console 
-    for (int i = 0; i < HEIGHT; i++) { 
-        for (int j = 0; j < WIDTH; j++) { 
-            if (board[i][j] == 1) { 
-                cout << "#"; 
-            } else { 
-                cout << "."; 
-            } 
-        } 
-        cout << endl; 
-    } 
-} 
- 
-bool checkCollision(int dx, int dy) { 
-    for (int i = 0; i < 4; i++) { 
-        int x = currentPiece[i][0] + dx; 
-        int y = currentPiece[i][1] + dy; 
-        if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT || board[y][x] == 1) { 
-            return true; 
-        } 
-    } 
-    return false; 
-} 
- 
-void placePiece() { 
-    for (int i = 0; i < 4; i++) { 
-        int x = currentPiece[i][0]; 
-        int y = currentPiece[i][1]; 
-        board[y][x] = 1; // Place the piece on the board 
-    } 
-} 
- 
-void clearLines() { 
-    for (int i = HEIGHT - 1; i >= 0; i--) { 
-        bool fullLine = true; 
-        for (int j = 0; j < WIDTH; j++) { 
-            if (board[i][j] == 0) { 
-                fullLine = false; 
-                break; 
-            } 
-        } 
-        if (fullLine) { 
-            for (int k = i; k > 0; k--) { 
-                board[k] = board[k - 1]; // Move lines down 
-            } 
-            board[0] = vector<int>(WIDTH, 0); // Clear top line 
-            i++; // Check the same line again 
-        } 
-    } 
-} 
- 
-void rotatePiece() { 
-    int temp[4][2]; 
-    for (int i = 0; i < 4; i++) { 
-        temp[i][0] = -currentPiece[i][1]; 
-        temp[i][1] = currentPiece[i][0]; 
-    } 
-    for (int i = 0; i < 4; i++) { 
-        currentPiece[i][0] = temp[i][0]; 
-        currentPiece[i][1] = temp[i][1]; 
-    } 
-} 
- 
-void spawnPiece() { 
-    currentPieceType = rand() % 7; // Random piece 
-    for (int i = 0; i < 4; i++) { 
-        currentPiece[i][0] = shapes[currentPieceType][i][0] + WIDTH / 2; 
-        currentPiece[i][1] = shapes[currentPieceType][i][1]; // Spawn at top 
-    } 
-} 
- 
-int main() { 
-    srand(time(0)); // Seed random number generator 
-    spawnPiece(); 
-    bool gameOver = false; 
- 
-    while (!gameOver) { 
-        drawBoard(); 
- 
-        if (_kbhit()) { 
-            char c = _getch(); 
-            if (c == 'a') { // Move left 
-                if (!checkCollision(-1, 0)) { 
-                    for (int i = 0; i < 4; i++) currentPiece[i][0]--; 
-                } 
-            } else if (c == 'd') { // Move right 
-                if (!checkCollision(1, 0)) { 
-                    for (int i = 0; i < 4; i++) currentPiece[i][0]++; 
-                } 
-            } else if (c == 's') { // Move down 
-                if (!checkCollision(0, 1)) { 
-                    for (int i = 0; i < 4; i++) currentPiece[i][1]++; 
-                } else { 
-                    placePiece(); 
-                    clearLines(); 
-                    spawnPiece(); 
-                    if (checkCollision(0, 0)) { 
-                        gameOver = true; // Game over 
-                    } 
-                } 
-            } else if (c == 'w') { // Rotate 
-                rotatePiece(); 
-                if (checkCollision(0, 0)) { 
-                    rotatePiece(); // Undo rotation 
-                } 
-            } 
-        } 
- 
-        // Move piece down automatically 
-        if (!checkCollision(0, 1)) { 
-            for (int i = 0; i < 4; i++) currentPiece[i][1]++; 
-        } else { 
-            placePiece(); 
-            clearLines(); 
-            spawnPiece(); 
-            if (checkCollision(0, 0)) { 
-                gameOver = true; // Game over 
-            } 
-        } 
- 
-        // Sleep for a short duration (you can adjust this) 
-        _sleep(100); 
-    } 
- 
-    cout << "Game Over!" << endl; 
-     return 0;
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std ;
+
+
+#if defined(_WIN32) || defined(_WIN64)
+    #include <conio.h>   
+    #include<windows.h>
+    // #include<mmsystem.h>
+    // #pragma comment(lib, "winmm.lib")
+    #define CLEAR "cls"
+
+#else 
+    #include <termios.h>
+    #include <unistd.h>
+    #include <fcntl.h>
+    #define CLEAR "clear"
+
+    int _kbhit() {
+        struct termios oldt, newt;
+        int ch;
+        int oldf;
+
+        tcgetattr(STDIN_FILENO, &oldt);
+        newt = oldt;
+        newt.c_lflag &= ~(ICANON | ECHO);
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+        oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+        fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+
+        ch = getchar();
+
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+        fcntl(STDIN_FILENO, F_SETFL, oldf);
+
+        if (ch != EOF) {
+            ungetc(ch, stdin);
+            return 1;
+        }
+        return 0;
+    }
+
+    int _getch() {
+        struct termios oldt, newt;
+        int ch;
+        tcgetattr(STDIN_FILENO, &oldt);
+        newt = oldt;
+        newt.c_lflag &= ~(ICANON | ECHO);
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+        ch = getchar();
+
+        if (ch == 27) {
+            if (getchar() == '[') {
+                switch (getchar()) {
+                    case 'A': ch = 'w'; break;  // Up Arrow
+                    case 'B': ch = 's'; break;  // Down Arrow
+                    case 'C': ch = 'd'; break;  // Right Arrow
+                    case 'D': ch = 'a'; break;  // Left Arrow
+                }
+            }
+        }
+
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+        return ch;
+    }
+
+#endif
+
+class Game {
+    private :
+        vector<vector<int>> grid;
+        vector<vector<int>> curPiece;
+        int width;
+        int height;
+        int pieceX;
+        int pieceY;
+        int score;
+        bool isGameOver;
+        vector<vector<vector<int>>> tetrominoes ;
+
+    public : 
+        Game(){
+            this->width = 10;
+            this->height = 20;
+            this->grid.resize(this->height, vector<int> (this->width, 0));
+            this->score = 0;
+            this->isGameOver = false;
+            this->tetrominoes = {
+                {{1, 1, 1, 1}},              // I shape
+                {{1, 1}, {1, 1}},            // O shape
+                {{0, 1, 0}, {1, 1, 1}},      // T shape
+                {{0, 1, 1}, {1, 1, 0}},      // S shape
+                {{1, 1, 0}, {0, 1, 1}},      // Z shape
+                {{1, 0, 0}, {1, 1, 1}},      // L shape
+                {{0, 0, 1}, {1, 1, 1}}       // J shape
+            };
+            generateTetrominoes();
+        }
+
+        void generateTetrominoes(){
+            int idx = rand() % (int)tetrominoes.size();
+            this->curPiece = tetrominoes[idx];
+            this->pieceX = (this->width/2) - (this->curPiece[0].size()/2);
+            this->pieceY = 0;
+            if (isColliding(this->pieceX,this->pieceY,this->curPiece)) {
+                
+            }
+        }
+
+        bool isColliding(int X,int Y,vector<vector<int>> piece){
+            for(int i=0;i<piece.size();i++){
+                for (int j=0;j<piece[0].size();j++){
+                    if (piece[i][j]==1){
+                        int currX = j+X;
+                        int currY = i+Y;
+                        if (currX < 0 || currX >= this->width || currY>=this->height){
+                            return true;
+                        }
+                        if (currY > 0 && grid[currY][currX] == 1){
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+};
+
+int main(){
+    srand(time(NULL));
+
+    return 0;
 }
