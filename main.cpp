@@ -27,20 +27,20 @@ using namespace std ;
         tcgetattr(STDIN_FILENO, &oldt);
         newt = oldt;
         newt.c_lflag &= ~(ICANON | ECHO);
-        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-        oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-        fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+          tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+          oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+          fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
 
-        ch = getchar();
+          ch = getchar();
 
-        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-        fcntl(STDIN_FILENO, F_SETFL, oldf);
+          tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+          fcntl(STDIN_FILENO, F_SETFL, oldf);
 
-        if (ch != EOF) {
-            ungetc(ch, stdin);
-            return 1;
-        }
-        return 0;
+          if (ch != EOF) {
+               ungetc(ch, stdin);
+               return 1;
+          }
+          return 0;
     }
 
      int _getch() {
@@ -69,67 +69,60 @@ using namespace std ;
 
 #endif
 
-class Game { 
-     protected : 
-          int width ;
-          int height ;
-          vector<vector<int>> grid ;
-          int score;
-          bool isGameOver;
+class Game {
+	protected : 
+		int width ;
+		int height ;
+		vector<vector<int>> board ;
+		int Score ;
+		bool isGameOver ;
 
-     public : 
-          Game(){
-               this->width = 10;
-               this->height = 20;
-               this->grid.resize(this->height , vector<int> (this->width,0));
-               this->score = 0;
-               this->isGameOver = false;
-          }
+	public : 
+		Game(){
+			this->width = 10;
+			this->height = 20;
+			board.resize(this->height,vector<int> (this->width,0));
+			this->Score = 0;
+			this->isGameOver = 0;
+		}
+};	
+
+class Tetrominoes : public Game {
+	protected : 
+		vector<vector<vector<int>>> tetrominoes = {
+			{{1, 1, 1, 1}}, // I
+			{{1, 1}, {1, 1}}, // O
+			{{0, 1, 0}, {1, 1, 1}}, // T
+			{{0, 1, 1}, {1, 1, 0}}, // S
+			{{1, 1, 0}, {0, 1, 1}}, // Z
+			{{1, 0, 0}, {1, 1, 1}}, // J
+			{{0, 0, 1}, {1, 1, 1}} // L
+		};
+		int curPiece;
+		int x , y;
+		vector<vector<int>> Piece ;
+
+	public :
+		Tetrominoes(){
+			this->curPiece = rand() % (int) tetrominoes.size();
+			Piece = tetrominoes[this->curPiece];
+		}
+
+	
 };
 
-class TetrisPieces : public Game { 
-     protected : 
-          int pieceX ;
-          int pieceY ;
-          vector<vector<vector<int>>> tetrominoes ;
-          vector<vector<int>> currPiece;
+class Main : public Tetrominoes  { 
+	protected :
+	
+	public : 
+		void Main_Board(){
+			system(CLEAR);
 
-     public : 
-          TetrisPieces(){
-               this->tetrominoes = {
-                    {{1, 1, 1, 1}},              // I shape
-                    {{1, 1}, {1, 1}},            // O shape
-                    {{0, 1, 0}, {1, 1, 1}},      // T shape
-                    {{0, 1, 1}, {1, 1, 0}},      // S shape
-                    {{1, 1, 0}, {0, 1, 1}},      // Z shape
-                    {{1, 0, 0}, {1, 1, 1}},      // L shape
-                    {{0, 0, 1}, {1, 1, 1}}       // J shape
-               };
-          }
-
-          void Generete() {
-               int index = rand() % (int)tetrominoes.size();
-               this->currPiece = tetrominoes[index];
-               this->pieceX = (this->width/2) - (this->currPiece[0].size()/2);
-               this->pieceY = 0;
-          }
-
-};
-
-class Main : public TetrisPieces {
-     protected :
-
-     public : 
-          void Main_Board(){
-               for (int i=0;i<this->grid.size();i++){
-                    for (int j=0;j<this->grid[0].size();j++){
-                         
-                    }
-               }
-          }
-};
+		}
+};	
 
 int main(){
-     srand(time(NULL));
-     return 0;
+	srand(time(NULL));
+
+	return 0;
 }
