@@ -202,7 +202,24 @@ void animation(string name) {
 
 int main() {
      
+    system(CLEAR);
+
+    cout << "\n\n\n";
+    cout << "          **************************************************************************************\n\n";
+    cout << "                                 W E L C O M E  T O  T E T R I S  G A M E ! !\n\n";
+    cout << "          **************************************************************************************\n\n\n\n";
     
+    string name;
+    cout << "\n\nEnter your Name : ";
+    getline(cin, name);
+
+    srand(time(NULL)); // Like Seed For rand() Function;
+
+    // Game Part;
+
+    cout << "\n\n\n\n\nOkay, Byee...  ";
+
+    cout << "Thank You " << name << " For Playing Our Game..!!\n\n\n\n";
 
     return 0;
 }
