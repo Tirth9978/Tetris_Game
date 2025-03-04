@@ -117,7 +117,47 @@ class Main : public Tetrominoes  {
 	public : 
 		void Main_Board(){
 			system(CLEAR);
+			vector<vector<int>> TempBoard = this->board;
 
+			for (int i=0;i<this->Piece.size();i++){
+				for (int j=0;j<this->Piece[i].size();i++){
+					if (this->Piece[i][j]){
+						TempBoard[this->y+i][this->x+j] = this->Piece[i][j];
+					}
+				}
+			}
+			for (int i=0;i<this->height;i++){
+				for (int j=0;j<this->width;i++){
+					if (TempBoard[i][j]){
+						cout << "#" << " ";
+					}
+					else {
+						cout << "  "; 
+					}
+				}
+				cout << endl;
+			}
+		}
+
+		bool validMove(int a,int b){
+			for (int i=0;i<this->Piece.size();i++){
+				for (int j=0;j<this->Piece[i].size();j++){
+					if (Piece[i][j]){
+						int newX = j + a + x;
+						int newY = i + b + y;
+						if (newX < 0 || newX >= this->width || newY >= this->height || board[newY][newX]){
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}
+
+		void MovePiece(int a){
+			if (validMove(a,0)){
+				this->x+=a;
+			}
 		}
 };	
 
