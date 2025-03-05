@@ -258,8 +258,33 @@ class Main : public Tetrominoes{
             }
         }
 
+        // void user_Input(){
+        //     while(!this->isGameOver){
+        //         if (_kbhit()) {
+        //             char ch = _getch();
+        //             if (ch == 27) this->isGameOver = 1;
+        //             if (ch == 'a' || ch == 75) movePiece(-1);
+        //             if (ch == 'd' || ch == 77) movePiece(1);
+        //             if (ch == 's' || ch == 80) dropPiece();
+        //             if (ch == 'e') rotatePiece(false);  // Rotate right
+        //             if (ch == 'q') rotatePiece(true); // Rotate left
+        //         }
+                
+                
+        //         Main_Board();
+        //         dropPiece();
+        //         #if defined(_WIN32) || defined(_WIN64)
+        //             Sleep(500);
+
+        //         #else 
+        //             usleep(500*1000);
+
+        //         #endif
+        //     }
+        // }
+
         void User_Input(){
-            while(!this->isGameOver){
+            if (_kbhit()){
                 if (_kbhit()) {
                     char ch = _getch();
                     if (ch == 27) this->isGameOver = 1;
@@ -269,17 +294,6 @@ class Main : public Tetrominoes{
                     if (ch == 'e') rotatePiece(false);  // Rotate right
                     if (ch == 'q') rotatePiece(true); // Rotate left
                 }
-                
-                
-                Main_Board();
-                dropPiece();
-                #if defined(_WIN32) || defined(_WIN64)
-                    Sleep(500);
-
-                #else 
-                    usleep(500*1000);
-
-                #endif
             }
         }
 
@@ -288,5 +302,17 @@ class Main : public Tetrominoes{
 int main(){
     Main game;
     game.User_Input();
+    while(1){
+        game.User_Input();
+        game.Main_Board();
+        game.dropPiece();
+        #if defined(_WIN32) || defined(_WIN64)
+            Sleep(400);
+
+        #else 
+            usleep(400*1000);
+
+        #endif
+    }
     return 0;
 }
