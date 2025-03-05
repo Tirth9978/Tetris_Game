@@ -80,7 +80,7 @@ class Game {
 		bool isGameOver ;
 
 	public : 
-		Game(){
+		Game() {
 			this->width = 10;
 			this->height = 20;
 			board.resize(this->height,vector<int> (this->width,0));
@@ -100,61 +100,68 @@ class Tetrominoes : public Game {
 			{{1, 0, 0}, {1, 1, 1}}, // J
 			{{0, 0, 1}, {1, 1, 1}} // L
 		};
+
 		int curPiece;
 		int x , y;
-		vector<vector<int>> Piece ;
+		vector<vector<int>> Piece;
 
 	public :
-		Tetrominoes(){
+		Tetrominoes() {
 			this->curPiece = rand() % (int) tetrominoes.size();
 			Piece = tetrominoes[this->curPiece];
             this->x = (this->width/2)-1;
             this->y=0;
 		}
-
 };
 
-class Main : public Tetrominoes{
+class Main : public Tetrominoes {
     public : 
-        void Main_Board(){
+        void Main_Board() {
+
             system(CLEAR);
+
             vector<vector<int>> tempBoard = board;
             
-            for (int i=0;i<Piece.size();i++){
-                
-                for (int j=0;j<Piece[i].size();j++){
-                    // cout << "Tirth\n";
-                    if (Piece[i][j]){
+            for (int i=0; i<Piece.size(); i++) {
+                for (int j=0; j<Piece[i].size(); j++) {
+                    if (Piece[i][j]) {
                         tempBoard[y+i][x+j] = Piece[i][j];  
                     }
                 }
             }
+
             cout << "<><><><><><><><><><><><>\n";
-            for (int i=0;i<this->height;i++){
+
+            for (int i=0; i<this->height; i++) {
                 cout<<"<>";
-                for (int j=0;j<this->width;j++){
-                    if (tempBoard[i][j]){
+
+                for (int j=0; j<this->width; j++) {
+                    if (tempBoard[i][j]) {
                         cout << "#" << " ";
                     }
                     else {
                         cout<<"  "; 
                     }
                 }
+
                 cout<<"<>";
                 cout << endl;
             }
+
             cout << "<><><><><><><><><><><><>\n";
         }
 
         void clearFullRows() {
             for (int i = height - 1; i >= 0; i--) {
                 bool fullRow = true;
+
                 for (int j = 0; j < width; j++) {
                     if (board[i][j] == 0) {
                         fullRow = false;
                         break;
                     }
                 }
+
                 if (fullRow) {
                     board.erase(board.begin() + i);
                     board.insert(board.begin(), vector<int>(width, 0));
@@ -164,30 +171,33 @@ class Main : public Tetrominoes{
             }
         }
 
-        bool validMove(int dx,int dy,vector<vector<int>> newPiece = {}){
+        bool validMove(int dx,int dy,vector<vector<int>> newPiece = {}) {
             if (newPiece.empty()) newPiece = Piece;
-            for (int i=0;i<Piece.size();i++){
-                for (int j=0;j<Piece[i].size();j++){
-                    if (Piece[i][j]){
+
+            for (int i=0; i<Piece.size(); i++) {
+                for (int j=0; j<Piece[i].size(); j++) {
+                    if (Piece[i][j]) {
                         int newX = x + j + dx;
                         int newY = y + i + dy;
+
                         if (newX<0 || newX >= this->width || newY>=this->height || board[newY][newX]){
                             return false ;
                         }
                     }
                 }
             }
+
             return true ;
         }
 
-        void movePiece(int dx){
-            if (validMove(dx,0)){
+        void movePiece(int dx) {
+            if (validMove(dx,0)) {
                 x = x + dx;
             }
         }
 
-        void dropPiece(){
-            if (validMove(0,1)){
+        void dropPiece() {
+            if (validMove(0,1)) {
                 y++;
             }
             else {
@@ -196,10 +206,10 @@ class Main : public Tetrominoes{
             }
         }
 
-        void placePiece(){
-            for (int i=0;i<Piece.size();i++){
-                for (int j=0;j<Piece[i].size();j++){
-                    if (Piece[i][j]){
+        void placePiece() {
+            for (int i=0; i<Piece.size(); i++) {
+                for (int j=0; j<Piece[i].size(); j++) {
+                    if (Piece[i][j]) {
                         board[i+y][x + j] = Piece[i][j];
                     }
                 }
@@ -208,44 +218,53 @@ class Main : public Tetrominoes{
             spawnNewPiece();
         }
 
-        void spawnNewPiece(){
+        void spawnNewPiece() {
             curPiece = rand() % (int)this->tetrominoes.size();
             Piece = tetrominoes[this->curPiece];
+
             x = (this->width/2)-1;
             y=0;
-            if (!validMove(0,0,Piece)){
+
+            if (!validMove(0,0,Piece)) {
                 cout << "Over \n";
                 exit(0);
             }
         }
 
-        vector<vector<int>> RotateRight(vector<vector<int>> mat){
+        vector<vector<int>> RotateRight(vector<vector<int>> mat) {
             int row = mat.size();
             int col = mat[0].size();
+
             vector<vector<int>> temp(col,vector<int> (row));
-            for (int i=0;i<row;i++){
-                for (int j=0;j<col;j++){
+
+            for (int i=0; i<row; i++) {
+                for (int j=0; j<col; j++) {
                     temp[j][row-i-1] = mat[i][j];
                 }
             }
+
             return temp;
         }
 
-        vector<vector<int>> RotateLeft(vector<vector<int>> mat){
+        vector<vector<int>> RotateLeft(vector<vector<int>> mat) {
             int row = mat.size();
             int col = mat[0].size();
-            vector<vector<int>> temp(col , vector<int>(row)) ;
-            for (int i=0;i<row;i++){
-                for (int j=0;j<col;j++){
+
+            vector<vector<int>> temp(col , vector<int>(row));
+
+            for (int i=0; i<row; i++) {
+                for (int j=0; j<col; j++) {
                     temp[col-j-1][i]=mat[i][j];
                 }
             }
+
             return temp;
         }
 
-        void rotatePiece(bool Anticlockwise){
+        void rotatePiece(bool Anticlockwise) {
             vector<vector<int>> Rotated ;
-            if (Anticlockwise){
+
+            if (Anticlockwise) {
                 Rotated = RotateLeft(Piece);
             }
             else {
@@ -253,7 +272,7 @@ class Main : public Tetrominoes{
             } 
             
 
-            if (validMove(0,0,Rotated)){
+            if (validMove(0, 0, Rotated)) {
                 Piece = Rotated;
             }
         }
@@ -283,8 +302,8 @@ class Main : public Tetrominoes{
         //     }
         // }
 
-        void User_Input(){
-            if (_kbhit()){
+        void User_Input() {
+            if (_kbhit()) {
                 if (_kbhit()) {
                     char ch = _getch();
                     if (ch == 27) this->isGameOver = 1;
@@ -296,16 +315,20 @@ class Main : public Tetrominoes{
                 }
             }
         }
-
 };
 
-int main(){
+int main() {
+
     Main game;
+
     game.User_Input();
-    while(1){
+
+    while(true) {
+
         game.User_Input();
         game.Main_Board();
         game.dropPiece();
+
         #if defined(_WIN32) || defined(_WIN64)
             Sleep(400);
 
@@ -314,5 +337,6 @@ int main(){
 
         #endif
     }
+    
     return 0;
 }
