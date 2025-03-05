@@ -5,7 +5,10 @@
 #include<vector>
 #include<map>
 #include<windows.h>
+#include <chrono>
+#include <thread>
 
+// using namespace std::thread;
 using namespace std ;
 
 
@@ -79,14 +82,17 @@ class Game {
 		vector<vector<int>> board ;
 		int Score ;
 		bool isGameOver ;
+        
 
-	public : 
+	public :
+        string name; 
 		Game() {
 			this->width = 10;
 			this->height = 20;
 			board.resize(this->height,vector<int> (this->width,0));
 			this->Score = 0;
 			this->isGameOver = 0;
+            // this->name = str ;
 		}
 };	
 
@@ -146,6 +152,14 @@ class Main : public Tetrominoes {
                 }
 
                 cout<<"<>";
+                if (i==2) cout << "      --------------------------------------";
+                if (i==3) cout << "      | a : Move Left    | d : Move Right  |" ;
+                if (i==4) cout << "      | e : Rotate Right | q : Rotate Left |";
+                if (i==5) cout << "      | Space : Hard Drop|Esc: Exit        |";
+                if (i==6) cout << "      ---------*---------*--------*---------";
+
+                if (i==7) printf( "      %s's Score : %d",this->name,this->Score);
+
                 cout << endl;
             }
 
@@ -261,7 +275,13 @@ class Main : public Tetrominoes {
 
             return temp;
         }
-
+        void hardDrop() {
+            while (validMove(0, 1)) {  
+                y++;
+            }
+            placePiece();
+            spawnNewPiece();
+        }
         void rotatePiece(bool Anticlockwise) {
             vector<vector<int>> Rotated ;
 
@@ -326,6 +346,9 @@ class Main : public Tetrominoes {
                 }
                 if (ch == 'q') {
                     rotatePiece(true); // Rotate left
+                }
+                if (ch == ' '){
+                    hardDrop();
                 }
                 
             }
@@ -409,7 +432,7 @@ void animation(string name) {
 }
 
 int main() {
-
+    cout << "\033[2J\033[H";
     system(CLEAR);
 
     cout << "\n\n\n";
@@ -417,18 +440,19 @@ int main() {
     cout << "                                 W E L C O M E  T O  T E T R I S  G A M E ! !\n\n";
     cout << "          **************************************************************************************\n\n\n\n";
     
-    string name;
+    string str;
     cout << "\n\nEnter your Name : ";
-    getline(cin, name);
+    getline(cin, str);
 
     srand(time(NULL)); // Like Seed For rand() Function;
 
     Main game;
-
-    animation(name);
+    game.name=str;
+    // animation(name);
 
     while(true) {
-
+        using namespace std::chrono;    
+        auto start = high_resolution_clock::now();
         game.User_Input();
         game.Main_Board();
         game.dropPiece();
@@ -440,6 +464,13 @@ int main() {
             usleep(400*1000);
 
         #endif
+        auto end = high_resolution_clock::now();
+        auto duration = duration_cast<milliseconds>(end - start);
+        int sleepTime = max(33 - (int)duration.count(), 1); // Maintain ~30FPS
+        // std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
+        // std::this_thread::sleep_for(milliseconds(sleepTime));
+        // std::this_thread::sleep_for(std::chrono::duration<int, std::milli>(sleepTime));
+
     }
 
     return 0;
