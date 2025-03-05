@@ -4,6 +4,7 @@
 #include <ctime>
 #include<vector>
 #include<map>
+#include<windows.h>
 
 using namespace std ;
 
@@ -303,22 +304,37 @@ class Main : public Tetrominoes {
         // }
 
         void User_Input() {
+
             if (_kbhit()) {
-                if (_kbhit()) {
-                    char ch = _getch();
-                    if (ch == 27) this->isGameOver = 1;
-                    if (ch == 'a' || ch == 75) movePiece(-1);
-                    if (ch == 'd' || ch == 77) movePiece(1);
-                    if (ch == 's' || ch == 80) dropPiece();
-                    if (ch == 'e') rotatePiece(false);  // Rotate right
-                    if (ch == 'q') rotatePiece(true); // Rotate left
+                
+                char ch = _getch();
+
+                if (ch == 27) {
+                    this->isGameOver = 1;
                 }
+                if (ch == 'a' || ch == 75) {
+                    movePiece(-1);
+                }
+                if (ch == 'd' || ch == 77) {
+                    movePiece(1);
+                }
+                if (ch == 's' || ch == 80) {
+                    dropPiece();
+                }
+                if (ch == 'e') {
+                    rotatePiece(false);  // Rotate right
+                }
+                if (ch == 'q') {
+                    rotatePiece(true); // Rotate left
+                }
+                
             }
         }
 };
 
 // Loading Animation part 
 void animation(string name) {
+    
     system(CLEAR);
 
     cout << "\n\n\n";
@@ -409,7 +425,7 @@ int main() {
 
     Main game;
 
-    game.User_Input();
+    animation(name);
 
     while(true) {
 
