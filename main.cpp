@@ -146,6 +146,24 @@ class Main : public Tetrominoes{
             cout << "<><><><><><><><><><><><>\n";
         }
 
+        void clearFullRows() {
+            for (int i = height - 1; i >= 0; i--) {
+                bool fullRow = true;
+                for (int j = 0; j < width; j++) {
+                    if (board[i][j] == 0) {
+                        fullRow = false;
+                        break;
+                    }
+                }
+                if (fullRow) {
+                    board.erase(board.begin() + i);
+                    board.insert(board.begin(), vector<int>(width, 0));
+                    this->Score += 10;
+                    i++; 
+                }
+            }
+        }
+
         bool validMove(int dx,int dy,vector<vector<int>> newPiece = {}){
             if (newPiece.empty()) newPiece = Piece;
             for (int i=0;i<Piece.size();i++){
@@ -186,6 +204,7 @@ class Main : public Tetrominoes{
                     }
                 }
             }
+            clearFullRows();
             spawnNewPiece();
         }
 
