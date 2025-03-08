@@ -123,7 +123,7 @@ class Tetrominoes : public Game {
 
 class Main : public Tetrominoes {
     public : 
-        void Main_Board() {
+        void Main_Board(int maxScore) {
 
             system(CLEAR);
 
@@ -158,7 +158,8 @@ class Main : public Tetrominoes {
                 if (i==5) cout << "      | Space : Hard Drop|Esc: Exit        |";
                 if (i==6) cout << "      ---------*---------*--------*---------";
 
-                if (i==7) printf( "      %s's Score : %d",this->name,this->Score);
+                if (i==7) cout << "      | "<<this->name<<"'s Score : " << this->Score ;
+                if (i==8) cout << "      | "<<this->name<<"'s MaxScore : " << maxScore ;
 
                 cout << endl;
             }
@@ -241,8 +242,9 @@ class Main : public Tetrominoes {
             y=0;
 
             if (!validMove(0,0,Piece)) {
-                cout << "Over \n";
-                exit(0);
+                // cout << "Over \n";
+                this->isGameOver=1;
+                // exit(0);
             }
         }
 
@@ -353,6 +355,16 @@ class Main : public Tetrominoes {
                 
             }
         }
+        bool IsOver(){
+            return this->isGameOver;
+        }
+
+        void Com(int &Max){
+            if (Max < Score){
+                Max = this->Score;
+            }
+            return ;
+        }
 };
 
 // Loading Animation part 
@@ -443,35 +455,82 @@ int main() {
     string str;
     cout << "\n\nEnter your Name : ";
     getline(cin, str);
-
+    int diff;
+    cout << "Enter the difficulty level \n";
+    cout << "Enter 1 , 2 or 3 \n";
+    cout << "1 . Easy\n";
+    cout << "2 . Medium\n";
+    cout << "3 . Hard\n";
+    cout << "4 . Dafault (2)\n";
+    cout << "Enter the number : ";
+    cin >> diff;
+    if (diff == 1){
+        diff = 400;
+    }
+    else if (diff == 2){
+        diff = 300;
+    }
+    else if (diff == 3){
+        diff = 200;
+    }
+    else {
+        diff = 300;
+    }
     srand(time(NULL)); // Like Seed For rand() Function;
+    int play = 1;
+    while(play){
+        Main game;
+        game.name=str;
+        animation(str);
+        int maxScore = 0;
+        
+        while(!game.IsOver()) {
+            using namespace std::chrono;    
+            auto start = high_resolution_clock::now();
+            game.User_Input();
+            game.Main_Board(maxScore);
+            game.dropPiece();
+            game.Com(maxScore);
+            #if defined(_WIN32) || defined(_WIN64)
+                Sleep(diff);
 
-    Main game;
-    game.name=str;
-    // animation(name);
+            #else 
+                usleep(diff*1000);
 
-    while(true) {
-        using namespace std::chrono;    
-        auto start = high_resolution_clock::now();
-        game.User_Input();
-        game.Main_Board();
-        game.dropPiece();
+            #endif
+            auto end = high_resolution_clock::now();
+            auto duration = duration_cast<milliseconds>(end - start);
+            int sleepTime = max(33 - (int)duration.count(), 1); // Maintain ~30FPS
+            // std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
+            // std::this_thread::sleep_for(milliseconds(sleepTime));
+            // std::this_thread::sleep_for(std::chrono::duration<int, std::milli>(sleepTime));
 
+        }
+        
+        system(CLEAR);
+
+        cout << "\n\n\n\n\n\n" R"(
+                 _____           __  __ ______     ______      ________   _____     
+                / ____|    /\   |  \/  |  ____|   / __ \ \    / /  ____| |  __ \
+                | |  __   /  \  | \  / | |__     | |  | \ \  / /| |__    | |__) |  
+                | | |_ | / /\ \ | |\/| |  __|    | |  | |\ \/ / |  __|   |  _  /   
+                | |__| |/ ____ \| |  | | |____   | |__| | \  /  | |____  | | \ \
+                \_____//_/    \_\_|  |_|______|   \____/   \/   |______| |_|  \_\
+        )" << flush;
+        cout << endl;
         #if defined(_WIN32) || defined(_WIN64)
-            Sleep(400);
+            Sleep(1000);
 
         #else 
-            usleep(400*1000);
+            usleep(1000*1000);
 
         #endif
-        auto end = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(end - start);
-        int sleepTime = max(33 - (int)duration.count(), 1); // Maintain ~30FPS
-        // std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-        // std::this_thread::sleep_for(milliseconds(sleepTime));
-        // std::this_thread::sleep_for(std::chrono::duration<int, std::milli>(sleepTime));
 
+        cout <<"Do you Want to play Again :)\nIf you want to play then enter 1 or 0";
+        cin>>play;
     }
 
+     
+    
     return 0;
 }
