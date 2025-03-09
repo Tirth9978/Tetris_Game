@@ -4,7 +4,7 @@
 #include <ctime>
 #include<vector>
 #include<map>
-// #include<windows.h>
+#include<windows.h>
 #include <chrono>
 #include <thread>
 
@@ -666,9 +666,11 @@ int main() {
             game.Main_Board(maxScore);
             game.dropPiece();
             game.Com(maxScore);
+
             // if (game.getScore() % 25 ==0){
             //     game.SpeedContorl(diff);
             // }
+            
             #if defined(_WIN32) || defined(_WIN64)
                 Sleep(diff);
 
