@@ -294,8 +294,6 @@ class Main : public Tetrominoes {
         // //     WriteConsoleOutput(hConsole, screenBuffer, bufferSize, {0, 0}, &windowSize);
         // // }
 
-        
-
         void clearFullRows() {
             for (int i = height - 1; i >= 0; i--) {
                 bool fullRow = true;
@@ -310,7 +308,7 @@ class Main : public Tetrominoes {
                 if (fullRow) {
                     board.erase(board.begin() + i);
                     board.insert(board.begin(), vector<int>(width, 0));
-                    this->Score += 10;
+                    this->Score += 5;
                     i++; 
                 }
             }
@@ -497,11 +495,11 @@ class Main : public Tetrominoes {
             return ;
         }
 
-        void SpeedContorl(int &diff){
+        void SpeedContorl(int &diff) {
             diff-=10;
         }
 
-        int getScore(){
+        int getScore() {
             return this->Score;
         }
 };
@@ -544,6 +542,13 @@ void animation(string name) {
                                          ___) |    
                                         |____/     
             )" << flush;
+
+            #if defined(_WIN32) || defined(_WIN64)
+                Sleep(700); // Delay so the user can see the countdown
+            #else
+                usleep(700 * 1000);
+            #endif
+
         } else if(i == 2) {
             cout << R"(
                                         ______
@@ -553,6 +558,13 @@ void animation(string name) {
                                           / /___
                                          /______| 
             )" << flush;
+
+            #if defined(_WIN32) || defined(_WIN64)
+                Sleep(700); // Delay so the user can see the countdown
+            #else
+                usleep(700 * 1000);
+            #endif
+
         } else if(i == 1) {
             cout << R"(
                                           _ 
@@ -562,6 +574,13 @@ void animation(string name) {
                                          | |
                                          |_|
             )" << flush;
+
+            #if defined(_WIN32) || defined(_WIN64)
+                Sleep(700); // Delay so the user can see the countdown
+            #else
+                usleep(700 * 1000);
+            #endif
+
         } else {
             system(CLEAR);
             cout << "\n\n\n\n\n\n" R"(
@@ -572,15 +591,22 @@ void animation(string name) {
                          ____) |    | |    /  ____  \  | | \ \     | |
                         |_____/     |_|   /__/    \__\ |_|  \_\    |_|
             )" << flush;
+            
+            #if defined(_WIN32) || defined(_WIN64)
+                Sleep(700); // Delay so the user can see the countdown
+            #else
+                usleep(700 * 1000);
+            #endif
+
         }
 
         system(CLEAR);
 
-        #if defined(_WIN32) || defined(_WIN64)
-            Sleep(2000);
-        #else
-             usleep(2000 * 1000);
-        #endif
+        // #if defined(_WIN32) || defined(_WIN64)
+        //     Sleep(2000);
+        // #else
+        //      usleep(2000 * 1000);
+        // #endif
     }
 }
 
@@ -625,12 +651,14 @@ int main() {
 
         Main game;
         game.name=str;
+
         animation(str);
+
         int maxScore = 0;
         
         while(!game.IsOver()) {
-            using namespace std::chrono;    
-            auto start = high_resolution_clock::now();
+            // using namespace std::chrono;    
+            // auto start = high_resolution_clock::now();
 
             game.User_Input();
             game.Main_Board(maxScore);
@@ -646,9 +674,10 @@ int main() {
                 usleep(diff*1000);
 
             #endif
-            auto end = high_resolution_clock::now();
-            auto duration = duration_cast<milliseconds>(end - start);
-            int sleepTime = max(33 - (int)duration.count(), 1); // Maintain ~30FPS
+
+            // auto end = high_resolution_clock::now();
+            // auto duration = duration_cast<milliseconds>(end - start);
+            // int sleepTime = max(33 - (int)duration.count(), 1); // Maintain ~30FPS
             // std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
             // std::this_thread::sleep_for(milliseconds(sleepTime));
             // std::this_thread::sleep_for(std::chrono::duration<int, std::milli>(sleepTime));
