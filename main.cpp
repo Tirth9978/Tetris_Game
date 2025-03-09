@@ -86,6 +86,7 @@ class Game {
 
 	public :
         string name; 
+
 		Game() {
 			this->width = 10;
 			this->height = 20;
@@ -160,7 +161,7 @@ class Main : public Tetrominoes {
         //         if (i==2) cout << "      --------------------------------------";
         //         if (i==3) cout << "      | a : Move Left    | d : Move Right  |" ;
         //         if (i==4) cout << "      | e : Rotate Right | q : Rotate Left |";
-        //         if (i==5) cout << "      | Space : Hard Drop|Esc: Exit        |";
+        //         if (i==5) cout << "      | Space : Hard Drop| Esc: Exit       |";
         //         if (i==6) cout << "      ---------*---------*--------*---------";
 
         //         if (i==7) cout << "      | "<<this->name<<"'s Score : " << this->Score ;
@@ -173,6 +174,7 @@ class Main : public Tetrominoes {
         // } 
 
         void Main_Board(int maxScore) {
+
             static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
             static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 3}; // Grid size (20x10) with spacing
             static COORD bufferSize = {22 * 2, 23};  // Buffer size (width + padding)
@@ -224,6 +226,7 @@ class Main : public Tetrominoes {
             for (int i = 0; i < scoreText.size(); i++) {
                 screenBuffer[(height + 1) * (22 * 2) + 2 + i].Char.AsciiChar = scoreText[i];
             }
+
             for (int i = 0; i < maxScoreText.size(); i++) {
                 screenBuffer[(height + 2) * (22 * 2) + 2 + i].Char.AsciiChar = maxScoreText[i];
             }
@@ -306,7 +309,7 @@ class Main : public Tetrominoes {
             Piece = tetrominoes[this->curPiece];
 
             x = (this->width/2)-1;
-            y=0;
+            y = 0;
 
             if (!validMove(0,0,Piece)) {
                 // cout << "Over \n";
@@ -344,13 +347,16 @@ class Main : public Tetrominoes {
 
             return temp;
         }
+
         void hardDrop() {
             while (validMove(0, 1)) {  
                 y++;
             }
+
             placePiece();
             spawnNewPiece();
         }
+
         void rotatePiece(bool Anticlockwise) {
             vector<vector<int>> Rotated ;
 
@@ -361,7 +367,6 @@ class Main : public Tetrominoes {
                 Rotated = RotateRight(Piece);
             } 
             
-
             if (validMove(0, 0, Rotated)) {
                 Piece = Rotated;
             }
@@ -416,28 +421,28 @@ class Main : public Tetrominoes {
                 if (ch == 'q') {
                     rotatePiece(true); // Rotate left
                 }
-                if (ch == ' '){
+                if (ch == ' ') {
                     hardDrop();
                 }
-                
             }
         }
-        bool IsOver(){
+
+        bool IsOver() {
             return this->isGameOver;
         }
 
-        void Com(int &Max){
-            if (Max < Score){
+        void Com(int &Max) {
+            if (Max < Score) {
                 Max = this->Score;
             }
             return ;
         }
 
-        void SpeedContorl(int &diff){
+        void SpeedContorl(int &diff) {
             diff-=10;
         }
 
-        int getScore(){
+        int getScore() {
             return this->Score;
         }
 };
@@ -532,30 +537,36 @@ int main() {
     string str;
     cout << "\n\nEnter your Name : ";
     getline(cin, str);
+
     int diff;
+
     cout << "Enter the difficulty level \n";
     cout << "Enter 1 , 2 or 3 \n";
     cout << "1 . Easy\n";
     cout << "2 . Medium\n";
     cout << "3 . Hard\n";
-    cout << "4 . Dafault (2)\n";
     cout << "Enter the number : ";
     cin >> diff;
-    if (diff == 1){
+
+    if (diff == 1) {
         diff = 400;
     }
-    else if (diff == 2){
+    else if (diff == 2) {
         diff = 300;
     }
-    else if (diff == 3){
+    else if (diff == 3) {
         diff = 200;
     }
     else {
         diff = 300;
     }
+
     srand(time(NULL)); // Like Seed For rand() Function;
+
     int play = 1;
-    while(play){
+
+    while(play) {
+
         Main game;
         game.name=str;
         animation(str);
@@ -564,13 +575,16 @@ int main() {
         while(!game.IsOver()) {
             using namespace std::chrono;    
             auto start = high_resolution_clock::now();
+
             game.User_Input();
             game.Main_Board(maxScore);
             game.dropPiece();
             game.Com(maxScore);
-            if (game.getScore() % 25 ==0){
+
+            if (game.getScore() % 25 ==0) {
                 game.SpeedContorl(diff);
             }
+
             #if defined(_WIN32) || defined(_WIN64)
                 Sleep(diff);
 
@@ -578,6 +592,7 @@ int main() {
                 usleep(diff*1000);
 
             #endif
+
             auto end = high_resolution_clock::now();
             auto duration = duration_cast<milliseconds>(end - start);
             int sleepTime = max(33 - (int)duration.count(), 1); // Maintain ~30FPS
@@ -597,7 +612,9 @@ int main() {
                 | |__| |/ ____ \| |  | | |____   | |__| | \  /  | |____  | | \ \
                 \_____//_/    \_\_|  |_|______|   \____/   \/   |______| |_|  \_\
         )" << flush;
+
         cout << endl;
+
         #if defined(_WIN32) || defined(_WIN64)
             Sleep(1000);
 
@@ -607,10 +624,9 @@ int main() {
         #endif
 
         cout <<"Do you Want to play Again :)\nIf you want to play then enter 1 or 0";
+        
         cin>>play;
     }
-
-     
     
     return 0;
 }
