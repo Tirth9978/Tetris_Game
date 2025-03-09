@@ -521,7 +521,7 @@ void animation(string name) {
 }
 
 int main() {
-    cout << "\033[2J\033[H";
+    // cout << "\033[2J\033[H";
     system(CLEAR);
 
     cout << "\n\n\n";
