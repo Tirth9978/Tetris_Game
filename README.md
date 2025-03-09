@@ -81,7 +81,13 @@ static CHAR_INFO screenBuffer[22 * 23];
 ---
 
 ## 🤝 Collaborators 🏆
-- 👨‍💻 **Tirth Patel** (Lead Developer)
+- 👨‍💻 **Tirth Patel (202401157)**
+- 👨‍💻 **Raj Patel (202401152)**
+- 👨‍💻 **Shlok Patel (202401156)**
+- 👨‍💻 ** Prakriti Pandey (202401164)**
+👏 **Special thanks to all contributors!**
+
+
 
 ---
 
