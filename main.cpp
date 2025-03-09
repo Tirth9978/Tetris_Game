@@ -4,7 +4,7 @@
 #include <ctime>
 #include<vector>
 #include<map>
-#include<windows.h>
+// #include<windows.h>
 #include <chrono>
 #include <thread>
 
@@ -290,9 +290,9 @@ class Main : public Tetrominoes {
         //         screenBuffer[(height + 2) * (22 * 2) + 2 + i].Char.AsciiChar = maxScoreText[i];
         //     }
 
-        // //     // Write buffer to console (flicker-free)
-        // //     WriteConsoleOutput(hConsole, screenBuffer, bufferSize, {0, 0}, &windowSize);
-        // // }
+        //     Write buffer to console (flicker-free)
+        //     WriteConsoleOutput(hConsole, screenBuffer, bufferSize, {0, 0}, &windowSize);
+        //  }
 
         
 
@@ -577,9 +577,9 @@ void animation(string name) {
         system(CLEAR);
 
         #if defined(_WIN32) || defined(_WIN64)
-            Sleep(2000);
+            Sleep(900);
         #else
-             usleep(2000 * 1000);
+             usleep(950 * 1000);
         #endif
     }
 }
@@ -607,13 +607,13 @@ int main() {
     cin >> diff;
 
     if(diff == 3) {
-        diff = 90;
+        diff = 200;
     } else if(diff == 2) {
-        diff = 140;
+        diff = 300;
     } else if(diff == 1) {
-        diff = 190;
+        diff = 400;
     } else {
-        diff = 140;
+        diff = 300;
     }
     cout <<"\n\n";
 
@@ -636,9 +636,9 @@ int main() {
             game.Main_Board(maxScore);
             game.dropPiece();
             game.Com(maxScore);
-            if (game.getScore() % 25 ==0){
-                game.SpeedContorl(diff);
-            }
+            // if (game.getScore() % 25 ==0){
+            //     game.SpeedContorl(diff);
+            // }
             #if defined(_WIN32) || defined(_WIN64)
                 Sleep(diff);
 
