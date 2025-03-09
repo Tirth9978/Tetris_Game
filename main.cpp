@@ -538,28 +538,25 @@ int main() {
     cout << "\n\nEnter your Name : ";
     getline(cin, str);
 
-    int diff;
+    int diff = 0;
 
-    cout << "Enter the difficulty level \n";
-    cout << "Enter 1 , 2 or 3 \n";
-    cout << "1 . Easy\n";
-    cout << "2 . Medium\n";
-    cout << "3 . Hard\n";
-    cout << "Enter the number : ";
+    cout << "\n\n";
+    cout << "Difficulty Levels : " << endl;
+    cout << "1. Easy\n2. Medium\n3. Hard\n\n";
+    cout << "NOTE : If You Press Key Other than 1, 2 or 3 then Difficulty Will Set Automatically to Medium..\n\n";
+    cout << "Set Difficulty Level : ";
     cin >> diff;
 
-    if (diff == 1) {
-        diff = 400;
+    if(diff == 3) {
+        diff = 90;
+    } else if(diff == 2) {
+        diff = 140;
+    } else if(diff == 1) {
+        diff = 190;
+    } else {
+        diff = 140;
     }
-    else if (diff == 2) {
-        diff = 300;
-    }
-    else if (diff == 3) {
-        diff = 200;
-    }
-    else {
-        diff = 300;
-    }
+    cout <<"\n\n";
 
     srand(time(NULL)); // Like Seed For rand() Function;
 
@@ -604,28 +601,33 @@ int main() {
         
         system(CLEAR);
 
-        cout << "\n\n\n\n\n\n" R"(
-                 _____           __  __ ______     ______      ________   _____     
-                / ____|    /\   |  \/  |  ____|   / __ \ \    / /  ____| |  __ \
-                | |  __   /  \  | \  / | |__     | |  | \ \  / /| |__    | |__) |  
-                | | |_ | / /\ \ | |\/| |  __|    | |  | |\ \/ / |  __|   |  _  /   
-                | |__| |/ ____ \| |  | | |____   | |__| | \  /  | |____  | | \ \
-                \_____//_/    \_\_|  |_|______|   \____/   \/   |______| |_|  \_\
-        )" << flush;
+        cout << "\n\n\n";
+        cout << R"(
+                              _____                         ____                 
+                             / ____|                       / __ \                
+                            | |  __  __ _ _ __ ___   ___  | |  | |_   _____ _ __ 
+                            | | |_ |/ _` | '_ ` _ \ / _ \ | |  | \ \ / / _ \ '__|
+                            | |__| | (_| | | | | | |  __/ | |__| |\ V /  __/ |   
+                             \_____|\__,_|_| |_| |_|\___|  \____/  \_/ \___|_|   
+        )" << "\n\n\n\n\n";
 
-        cout << endl;
+        cout << "                                        ";
+        cout << "G A M E  O V E R  ! ! ! \n\n\n\n\n";
 
         #if defined(_WIN32) || defined(_WIN64)
-            Sleep(1000);
+            Sleep(400);
 
         #else 
-            usleep(1000*1000);
+            usleep(400000);
 
         #endif
 
-        cout <<"Do you Want to play Again :)\nIf you want to play then enter 1 or 0";
-        
-        cin>>play;
+        // cout << "Your Highest Score : " << max_score << "\n\n\n";
+        cout << "\n\nDo You Want To Play Again..?\n\n";
+        cout << "NOTE : If You Press Key Other Than 0 or 1 Then Computer will treat it as 0..\n";
+        cout << "Enter 1 For \"YES\" and 0 For \"NO\" : ";
+
+        cin >> play;
     }
     
     return 0;
