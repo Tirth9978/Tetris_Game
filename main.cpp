@@ -86,6 +86,7 @@ class Game {
 
 	public :
         string name; 
+
 		Game() {
 			this->width = 10;
 			this->height = 20;
@@ -216,17 +217,78 @@ class Main : public Tetrominoes {
         //                 screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Attributes = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
         //             }
         //         }
+
+        //         cout<<"<>";
+        //         if (i==2) cout << "      --------------------------------------";
+        //         if (i==3) cout << "      | a : Move Left    | d : Move Right  |" ;
+        //         if (i==4) cout << "      | e : Rotate Right | q : Rotate Left |";
+        //         if (i==5) cout << "      | Space : Hard Drop|Esc: Exit        |";
+        //         if (i==6) cout << "      ---------*---------*--------*---------";
+
+        //         if (i==7) cout << "      | "<<this->name<<"'s Score : " << this->Score ;
+        //         if (i==8) cout << "      | "<<this->name<<"'s MaxScore : " << maxScore ;
+
+        //         cout << endl;
         //     }
 
-        //     // Display score
-        //     string scoreText = "Score: " + to_string(Score);
-        //     string maxScoreText = "Max: " + to_string(maxScore);
-        //     for (int i = 0; i < scoreText.size(); i++) {
-        //         screenBuffer[(height + 1) * (22 * 2) + 2 + i].Char.AsciiChar = scoreText[i];
-        //     }
-        //     for (int i = 0; i < maxScoreText.size(); i++) {
-        //         screenBuffer[(height + 2) * (22 * 2) + 2 + i].Char.AsciiChar = maxScoreText[i];
-        //     }
+        //     cout << "<><><><><><><><><><><><>\n";
+        // } 
+
+        void Main_Board(int maxScore) {
+            static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+            static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 3}; // Grid size (20x10) with spacing
+            static COORD bufferSize = {22 * 2, 23};  // Buffer size (width + padding)
+            static CHAR_INFO screenBuffer[22 * 2 * 23]; // Screen buffer
+
+            // Clear buffer
+            for (int i = 0; i < 22 * 2 * 23; i++) {
+                screenBuffer[i].Char.AsciiChar = ' ';
+                screenBuffer[i].Attributes = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE;
+            }
+
+            // Draw game border
+            for (int i = 0; i < height; i++) {
+                screenBuffer[i * (22 * 2)].Char.AsciiChar = '<';
+                screenBuffer[i * (22 * 2) + width * 2 + 1].Char.AsciiChar = '>';
+            }
+            for (int i = 0; i < width * 2 + 2; i++) {
+                screenBuffer[i].Char.AsciiChar = '<';
+                screenBuffer[(height) * (22 * 2) + i].Char.AsciiChar = '>';
+            }
+
+            // Copy game board to buffer (with spacing)
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (board[i][j]) {
+                        screenBuffer[i * (22 * 2) + (j * 2) + 1].Char.AsciiChar = '#';
+                        screenBuffer[i * (22 * 2) + (j * 2) + 2].Char.AsciiChar = ' ';  // Space for better visibility
+                        screenBuffer[i * (22 * 2) + (j * 2) + 1].Attributes = FOREGROUND_RED | FOREGROUND_INTENSITY;
+                    }
+                }
+            }
+
+            // Copy Tetromino piece to buffer (with spacing)
+            for (int i = 0; i < Piece.size(); i++) {
+                for (int j = 0; j < Piece[i].size(); j++) {
+                    if (Piece[i][j]) {
+                        int posX = x + j;
+                        int posY = y + i;
+                        screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Char.AsciiChar = '#';
+                        screenBuffer[posY * (22 * 2) + (posX * 2) + 2].Char.AsciiChar = ' ';  // Add space between blocks
+                        screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Attributes = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+                    }
+                }
+            }
+
+            // Display score
+            string scoreText = "Score: " + to_string(Score);
+            string maxScoreText = "Max: " + to_string(maxScore);
+            for (int i = 0; i < scoreText.size(); i++) {
+                screenBuffer[(height + 1) * (22 * 2) + 2 + i].Char.AsciiChar = scoreText[i];
+            }
+            for (int i = 0; i < maxScoreText.size(); i++) {
+                screenBuffer[(height + 2) * (22 * 2) + 2 + i].Char.AsciiChar = maxScoreText[i];
+            }
 
         //     // Write buffer to console (flicker-free)
         //     WriteConsoleOutput(hConsole, screenBuffer, bufferSize, {0, 0}, &windowSize);
@@ -306,7 +368,7 @@ class Main : public Tetrominoes {
             Piece = tetrominoes[this->curPiece];
 
             x = (this->width/2)-1;
-            y=0;
+            y = 0;
 
             if (!validMove(0,0,Piece)) {
                 // cout << "Over \n";
@@ -344,13 +406,16 @@ class Main : public Tetrominoes {
 
             return temp;
         }
+
         void hardDrop() {
             while (validMove(0, 1)) {  
                 y++;
             }
+
             placePiece();
             spawnNewPiece();
         }
+
         void rotatePiece(bool Anticlockwise) {
             vector<vector<int>> Rotated ;
 
@@ -361,7 +426,6 @@ class Main : public Tetrominoes {
                 Rotated = RotateRight(Piece);
             } 
             
-
             if (validMove(0, 0, Rotated)) {
                 Piece = Rotated;
             }
@@ -416,30 +480,30 @@ class Main : public Tetrominoes {
                 if (ch == 'q') {
                     rotatePiece(true); // Rotate left
                 }
-                if (ch == ' '){
+                if (ch == ' ') {
                     hardDrop();
                 }
-                
             }
         }
-        bool IsOver(){
+
+        bool IsOver() {
             return this->isGameOver;
         }
 
-        void Com(int &Max){
-            if (Max < Score){
+        void Com(int &Max) {
+            if (Max < Score) {
                 Max = this->Score;
             }
             return ;
         }
 
-        // void SpeedContorl(int &diff){
-        //     diff-=10;
-        // }
+        void SpeedContorl(int &diff){
+            diff-=10;
+        }
 
-        // int getScore(){
-        //     return this->Score;
-        // }
+        int getScore(){
+            return this->Score;
+        }
 };
 
 // Loading Animation part 
@@ -532,30 +596,33 @@ int main() {
     string str;
     cout << "\n\nEnter your Name : ";
     getline(cin, str);
-    int diff;
-    cout << "Enter the difficulty level \n";
-    cout << "Enter 1 , 2 or 3 \n";
-    cout << "1 . Easy\n";
-    cout << "2 . Medium\n";
-    cout << "3 . Hard\n";
-    cout << "4 . Dafault (2)\n";
-    cout << "Enter the number : ";
+
+    int diff = 0;
+
+    cout << "\n\n";
+    cout << "Difficulty Levels : " << endl;
+    cout << "1. Easy\n2. Medium\n3. Hard\n\n";
+    cout << "NOTE : If You Press Key Other than 1, 2 or 3 then Difficulty Will Set Automatically to Medium..\n\n";
+    cout << "Set Difficulty Level : ";
     cin >> diff;
-    if (diff == 1){
-        diff = 400;
+
+    if(diff == 3) {
+        diff = 90;
+    } else if(diff == 2) {
+        diff = 140;
+    } else if(diff == 1) {
+        diff = 190;
+    } else {
+        diff = 140;
     }
-    else if (diff == 2){
-        diff = 300;
-    }
-    else if (diff == 3){
-        diff = 200;
-    }
-    else {
-        diff = 300;
-    }
+    cout <<"\n\n";
+
     srand(time(NULL)); // Like Seed For rand() Function;
+
     int play = 1;
-    while(play){
+
+    while(play) {
+
         Main game;
         game.name=str;
         animation(str);
@@ -564,13 +631,14 @@ int main() {
         while(!game.IsOver()) {
             using namespace std::chrono;    
             auto start = high_resolution_clock::now();
+
             game.User_Input();
             game.Main_Board(maxScore);
             game.dropPiece();
             game.Com(maxScore);
-            // if (game.getScore() % 25 ==0){
-            //     game.SpeedContorl(diff);
-            // }
+            if (game.getScore() % 25 ==0){
+                game.SpeedContorl(diff);
+            }
             #if defined(_WIN32) || defined(_WIN64)
                 Sleep(diff);
 
@@ -578,9 +646,9 @@ int main() {
                 usleep(diff*1000);
 
             #endif
-            // auto end = high_resolution_clock::now();
-            // auto duration = duration_cast<milliseconds>(end - start);
-            // int sleepTime = max(33 - (int)duration.count(), 1); // Maintain ~30FPS
+            auto end = high_resolution_clock::now();
+            auto duration = duration_cast<milliseconds>(end - start);
+            int sleepTime = max(33 - (int)duration.count(), 1); // Maintain ~30FPS
             // std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
             // std::this_thread::sleep_for(milliseconds(sleepTime));
             // std::this_thread::sleep_for(std::chrono::duration<int, std::milli>(sleepTime));
@@ -589,28 +657,34 @@ int main() {
         
         system(CLEAR);
 
-        cout << "\n\n\n\n\n\n" R"(
-                 _____           __  __ ______     ______      ________   _____     
-                / ____|    /\   |  \/  |  ____|   / __ \ \    / /  ____| |  __ \
-                | |  __   /  \  | \  / | |__     | |  | \ \  / /| |__    | |__) |  
-                | | |_ | / /\ \ | |\/| |  __|    | |  | |\ \/ / |  __|   |  _  /   
-                | |__| |/ ____ \| |  | | |____   | |__| | \  /  | |____  | | \ \
-                \_____//_/    \_\_|  |_|______|   \____/   \/   |______| |_|  \_\
-        )" << flush;
-        cout << endl;
+        cout << "\n\n\n";
+        cout << R"(
+                              _____                         ____                 
+                             / ____|                       / __ \                
+                            | |  __  __ _ _ __ ___   ___  | |  | |_   _____ _ __ 
+                            | | |_ |/ _` | '_ ` _ \ / _ \ | |  | \ \ / / _ \ '__|
+                            | |__| | (_| | | | | | |  __/ | |__| |\ V /  __/ |   
+                             \_____|\__,_|_| |_| |_|\___|  \____/  \_/ \___|_|   
+        )" << "\n\n\n\n\n";
+
+        cout << "                                        ";
+        cout << "G A M E  O V E R  ! ! ! \n\n\n\n\n";
+
         #if defined(_WIN32) || defined(_WIN64)
-            Sleep(1000);
+            Sleep(400);
 
         #else 
-            usleep(1000*1000);
+            usleep(400000);
 
         #endif
 
-        cout <<"Do you Want to play Again :)\nIf you want to play then enter 1 or 0";
-        cin>>play;
-    }
+        // cout << "Your Highest Score : " << max_score << "\n\n\n";
+        cout << "\n\nDo You Want To Play Again..?\n\n";
+        cout << "NOTE : If You Press Key Other Than 0 or 1 Then Computer will treat it as 0..\n";
+        cout << "Enter 1 For \"YES\" and 0 For \"NO\" : ";
 
-     
+        cin >> play;
+    }
     
     return 0;
 }
