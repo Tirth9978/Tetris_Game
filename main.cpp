@@ -546,12 +546,13 @@ void animation(string name) {
             )" << flush;
 
             #if defined(_WIN32) || defined(_WIN64)
-                Sleep(700); // Delay so the user can see the countdown
+                Sleep(500); // Delay so the user can see the countdown
             #else
-                usleep(700 * 1000);
+                usleep(500 * 1000);
             #endif
 
-        } else if(i == 2) {
+        } 
+        else if(i == 2) {
             cout << R"(
                                         ______
                                        / ____ \
@@ -562,9 +563,9 @@ void animation(string name) {
             )" << flush;
 
             #if defined(_WIN32) || defined(_WIN64)
-                Sleep(700); // Delay so the user can see the countdown
+                Sleep(500); // Delay so the user can see the countdown
             #else
-                usleep(700 * 1000);
+                usleep(500 * 1000);
             #endif
 
         } else if(i == 1) {
@@ -578,9 +579,9 @@ void animation(string name) {
             )" << flush;
 
             #if defined(_WIN32) || defined(_WIN64)
-                Sleep(700); // Delay so the user can see the countdown
+                Sleep(500); // Delay so the user can see the countdown
             #else
-                usleep(700 * 1000);
+                usleep(500 * 1000);
             #endif
 
         } else {
@@ -595,21 +596,22 @@ void animation(string name) {
             )" << flush;
             
             #if defined(_WIN32) || defined(_WIN64)
-                Sleep(700); // Delay so the user can see the countdown
+                Sleep(500); // Delay so the user can see the countdown
             #else
-                usleep(700 * 1000);
+                usleep(500 * 1000);
             #endif
 
         }
 
-        system(CLEAR);
+        // system(CLEAR);
 
-        #if defined(_WIN32) || defined(_WIN64)
-            Sleep(2000);
-        #else
-             usleep(2000 * 1000);
-        #endif
+        // #if defined(_WIN32) || defined(_WIN64)
+        //     Sleep(2000);
+        // #else
+        //      usleep(2000 * 1000);
+        // #endif
     }
+    system(CLEAR);
 }
 
 int main() {
