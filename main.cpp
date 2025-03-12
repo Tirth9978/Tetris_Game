@@ -4,7 +4,7 @@
 #include <ctime>
 #include<vector>
 #include<map>
-#include<windows.h>
+// #include<windows.h>
 #include <chrono>
 #include <thread>
 
@@ -124,176 +124,120 @@ class Tetrominoes : public Game {
 
 class Main : public Tetrominoes {
     public : 
-        // void Main_Board(int maxScore) {
+    
+        #if defined(_WIN32) || defined(_WIN64)
+            void Main_Board(int maxScore) {
+                static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+                static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 3}; // Grid size (20x10) with spacing
+                static COORD bufferSize = {22 * 2, 23};  // Buffer size (width + padding)
+                static CHAR_INFO screenBuffer[22 * 2 * 23]; // Screen buffer
 
-        //     // system(CLEAR);
-        //     // HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-        //     // COORD cursorPosition;
-        //     // cursorPosition.X = 0;
-        //     // cursorPosition.Y = 0;
-        //     // SetConsoleCursorPosition(hConsole, cursorPosition);
-        //     system(CLEAR);
-        //     vector<vector<int>> tempBoard = board;
-            
-        //     for (int i=0; i<Piece.size(); i++) {
-        //         for (int j=0; j<Piece[i].size(); j++) {
-        //             if (Piece[i][j]) {
-        //                 tempBoard[y+i][x+j] = Piece[i][j];  
-        //             }
-        //         }
-        //     }
+                // Clear buffer
+                for (int i = 0; i < 22 * 2 * 23; i++) {
+                    screenBuffer[i].Char.AsciiChar = ' ';
+                    screenBuffer[i].Attributes = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE;
+                }
 
-        //     cout << "<><><><><><><><><><><><>\n";
+                // Draw game border
+                for (int i = 0; i < height; i++) {
+                    screenBuffer[i * (22 * 2)].Char.AsciiChar = '<';
+                    screenBuffer[i * (22 * 2) + width * 2 + 1].Char.AsciiChar = '>';
+                }
+                for (int i = 0; i < width * 2 + 2; i++) {
+                    screenBuffer[i].Char.AsciiChar = '<';
+                    screenBuffer[(height) * (22 * 2) + i].Char.AsciiChar = '>';
+                }
 
-        //     for (int i=0; i<this->height; i++) {
-        //         cout<<"<>";
+                // Copy game board to buffer (with spacing)
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        if (board[i][j]) {
+                            screenBuffer[i * (22 * 2) + (j * 2) + 1].Char.AsciiChar = '#';
+                            screenBuffer[i * (22 * 2) + (j * 2) + 2].Char.AsciiChar = ' ';  // Space for better visibility
+                            screenBuffer[i * (22 * 2) + (j * 2) + 1].Attributes = FOREGROUND_RED | FOREGROUND_INTENSITY;
+                        }
+                    }
+                }
 
-        //         for (int j=0; j<this->width; j++) {
-        //             if (tempBoard[i][j]) {
-        //                 cout << "#" << " ";
-        //             }
-        //             else {
-        //                 cout<<"  "; 
-        //             }
-        //         }
+                // Copy Tetromino piece to buffer (with spacing)
+                for (int i = 0; i < Piece.size(); i++) {
+                    for (int j = 0; j < Piece[i].size(); j++) {
+                        if (Piece[i][j]) {
+                            int posX = x + j;
+                            int posY = y + i;
+                            screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Char.AsciiChar = '#';
+                            screenBuffer[posY * (22 * 2) + (posX * 2) + 2].Char.AsciiChar = ' ';  // Add space between blocks
+                            screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Attributes = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+                        }
+                    }
+                }
 
-        //         cout<<"<>";
-        //         if (i==2) cout << "      --------------------------------------";
-        //         if (i==3) cout << "      | a : Move Left    | d : Move Right  |" ;
-        //         if (i==4) cout << "      | e : Rotate Right | q : Rotate Left |";
-        //         if (i==5) cout << "      | Space : Hard Drop|Esc: Exit        |";
-        //         if (i==6) cout << "      ---------*---------*--------*---------";
+                // Display score
+                string scoreText = "Score: " + to_string(Score);
+                string maxScoreText = "Max: " + to_string(maxScore);
+                for (int i = 0; i < scoreText.size(); i++) {
+                    screenBuffer[(height + 1) * (22 * 2) + 2 + i].Char.AsciiChar = scoreText[i];
+                }
+                for (int i = 0; i < maxScoreText.size(); i++) {
+                    screenBuffer[(height + 2) * (22 * 2) + 2 + i].Char.AsciiChar = maxScoreText[i];
+                }
 
-        //         if (i==7) cout << "      | "<<this->name<<"'s Score : " << this->Score ;
-        //         if (i==8) cout << "      | "<<this->name<<"'s MaxScore : " << maxScore ;
+                // Write buffer to console (flicker-free)
+                WriteConsoleOutput(hConsole, screenBuffer, bufferSize, {0, 0}, &windowSize);
+            }
 
-        //         cout << endl;
-        //     }
-
-        //     cout << "<><><><><><><><><><><><>\n";
-        // } 
-
-        // void Main_Board(int maxScore) {
-        // //     static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-        // //     static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 3}; // Grid size (20x10) with spacing
-        // //     static COORD bufferSize = {22 * 2, 23};  // Buffer size (width + padding)
-        // //     static CHAR_INFO screenBuffer[22 * 2 * 23]; // Screen buffer
-
-        // //     // Clear buffer
-        // //     for (int i = 0; i < 22 * 2 * 23; i++) {
-        // //         screenBuffer[i].Char.AsciiChar = ' ';
-        // //         screenBuffer[i].Attributes = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE;
-        // //     }
-
-        // //     // Draw game border
-        // //     for (int i = 0; i < height; i++) {
-        // //         screenBuffer[i * (22 * 2)].Char.AsciiChar = '<';
-        // //         screenBuffer[i * (22 * 2) + width * 2 + 1].Char.AsciiChar = '>';
-        // //     }
-        // //     for (int i = 0; i < width * 2 + 2; i++) {
-        // //         screenBuffer[i].Char.AsciiChar = '<';
-        // //         screenBuffer[(height) * (22 * 2) + i].Char.AsciiChar = '>';
-        // //     }
-
-        // //     // Copy game board to buffer (with spacing)
-        // //     for (int i = 0; i < height; i++) {
-        // //         for (int j = 0; j < width; j++) {
-        // //             if (board[i][j]) {
-        // //                 screenBuffer[i * (22 * 2) + (j * 2) + 1].Char.AsciiChar = '#';
-        // //                 screenBuffer[i * (22 * 2) + (j * 2) + 2].Char.AsciiChar = ' ';  // Space for better visibility
-        // //                 screenBuffer[i * (22 * 2) + (j * 2) + 1].Attributes = FOREGROUND_RED | FOREGROUND_INTENSITY;
-        // //             }
-        // //         }
-        // //     }
-
-        // //     // Copy Tetromino piece to buffer (with spacing)
-        // //     for (int i = 0; i < Piece.size(); i++) {
-        // //         for (int j = 0; j < Piece[i].size(); j++) {
-        // //             if (Piece[i][j]) {
-        // //                 int posX = x + j;
-        // //                 int posY = y + i;
-        // //                 screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Char.AsciiChar = '#';
-        // //                 screenBuffer[posY * (22 * 2) + (posX * 2) + 2].Char.AsciiChar = ' ';  // Add space between blocks
-        // //                 screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Attributes = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
-        // //             }
-        // //         }
-
-        // //         cout<<"<>";
-        // //         if (i==2) cout << "      --------------------------------------";
-        // //         if (i==3) cout << "      | a : Move Left    | d : Move Right  |" ;
-        // //         if (i==4) cout << "      | e : Rotate Right | q : Rotate Left |";
-        // //         if (i==5) cout << "      | Space : Hard Drop|Esc: Exit        |";
-        // //         if (i==6) cout << "      ---------*---------*--------*---------";
-
-        // //         if (i==7) cout << "      | "<<this->name<<"'s Score : " << this->Score ;
-        // //         if (i==8) cout << "      | "<<this->name<<"'s MaxScore : " << maxScore ;
-
-        // //         cout << endl;
-        // //     }
-
-        // //     cout << "<><><><><><><><><><><><>\n";
-        // // } 
+        #else 
 
         void Main_Board(int maxScore) {
-            static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-            static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 3}; // Grid size (20x10) with spacing
-            static COORD bufferSize = {22 * 2, 23};  // Buffer size (width + padding)
-            static CHAR_INFO screenBuffer[22 * 2 * 23]; // Screen buffer
 
-            // Clear buffer
-            for (int i = 0; i < 22 * 2 * 23; i++) {
-                screenBuffer[i].Char.AsciiChar = ' ';
-                screenBuffer[i].Attributes = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE;
-            }
-
-            // Draw game border
-            for (int i = 0; i < height; i++) {
-                screenBuffer[i * (22 * 2)].Char.AsciiChar = '<';
-                screenBuffer[i * (22 * 2) + width * 2 + 1].Char.AsciiChar = '>';
-            }
-            for (int i = 0; i < width * 2 + 2; i++) {
-                screenBuffer[i].Char.AsciiChar = '<';
-                screenBuffer[(height) * (22 * 2) + i].Char.AsciiChar = '>';
-            }
-
-            // Copy game board to buffer (with spacing)
-            for (int i = 0; i < height; i++) {
-                for (int j = 0; j < width; j++) {
-                    if (board[i][j]) {
-                        screenBuffer[i * (22 * 2) + (j * 2) + 1].Char.AsciiChar = '#';
-                        screenBuffer[i * (22 * 2) + (j * 2) + 2].Char.AsciiChar = ' ';  // Space for better visibility
-                        screenBuffer[i * (22 * 2) + (j * 2) + 1].Attributes = FOREGROUND_RED | FOREGROUND_INTENSITY;
-                    }
-                }
-            }
-
-            // Copy Tetromino piece to buffer (with spacing)
-            for (int i = 0; i < Piece.size(); i++) {
-                for (int j = 0; j < Piece[i].size(); j++) {
+            // system(CLEAR);
+            // HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+            // COORD cursorPosition;
+            // cursorPosition.X = 0;
+            // cursorPosition.Y = 0;
+            // SetConsoleCursorPosition(hConsole, cursorPosition);
+            system(CLEAR);
+            vector<vector<int>> tempBoard = board;
+            
+            for (int i=0; i<Piece.size(); i++) {
+                for (int j=0; j<Piece[i].size(); j++) {
                     if (Piece[i][j]) {
-                        int posX = x + j;
-                        int posY = y + i;
-                        screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Char.AsciiChar = '#';
-                        screenBuffer[posY * (22 * 2) + (posX * 2) + 2].Char.AsciiChar = ' ';  // Add space between blocks
-                        screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Attributes = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+                        tempBoard[y+i][x+j] = Piece[i][j];  
                     }
                 }
             }
 
-            // Display score
-            string scoreText = "Score: " + to_string(Score);
-            string maxScoreText = "Max: " + to_string(maxScore);
-            for (int i = 0; i < scoreText.size(); i++) {
-                screenBuffer[(height + 1) * (22 * 2) + 2 + i].Char.AsciiChar = scoreText[i];
-            }
-            for (int i = 0; i < maxScoreText.size(); i++) {
-                screenBuffer[(height + 2) * (22 * 2) + 2 + i].Char.AsciiChar = maxScoreText[i];
+            cout << "<><><><><><><><><><><><>\n";
+
+            for (int i=0; i<this->height; i++) {
+                cout<<"<>";
+
+                for (int j=0; j<this->width; j++) {
+                    if (tempBoard[i][j]) {
+                        cout << "#" << " ";
+                    }
+                    else {
+                        cout<<"  "; 
+                    }
+                }
+
+                cout<<"<>";
+                if (i==2) cout << "      --------------------------------------";
+                if (i==3) cout << "      | a : Move Left    | d : Move Right  |" ;
+                if (i==4) cout << "      | e : Rotate Right | q : Rotate Left |";
+                if (i==5) cout << "      | Space : Hard Drop|Esc: Exit        |";
+                if (i==6) cout << "      ---------*---------*--------*---------";
+
+                if (i==7) cout << "      | "<<this->name<<"'s Score : " << this->Score ;
+                if (i==8) cout << "      | "<<this->name<<"'s MaxScore : " << maxScore ;
+
+                cout << endl;
             }
 
-            // Write buffer to console (flicker-free)
-            WriteConsoleOutput(hConsole, screenBuffer, bufferSize, {0, 0}, &windowSize);
-        }
+            cout << "<><><><><><><><><><><><>\n";
+        } 
 
+        #endif 
         
 
         void clearFullRows() {
@@ -430,31 +374,6 @@ class Main : public Tetrominoes {
                 Piece = Rotated;
             }
         }
-
-        // void user_Input(){
-        //     while(!this->isGameOver){
-        //         if (_kbhit()) {
-        //             char ch = _getch();
-        //             if (ch == 27) this->isGameOver = 1;
-        //             if (ch == 'a' || ch == 75) movePiece(-1);
-        //             if (ch == 'd' || ch == 77) movePiece(1);
-        //             if (ch == 's' || ch == 80) dropPiece();
-        //             if (ch == 'e') rotatePiece(false);  // Rotate right
-        //             if (ch == 'q') rotatePiece(true); // Rotate left
-        //         }
-                
-                
-        //         Main_Board();
-        //         dropPiece();
-        //         #if defined(_WIN32) || defined(_WIN64)
-        //             Sleep(500);
-
-        //         #else 
-        //             usleep(500*1000);
-
-        //         #endif
-        //     }
-        // }
 
         void User_Input() {
 
@@ -681,12 +600,6 @@ int main() {
 
             #endif
 
-            // auto end = high_resolution_clock::now();
-            // auto duration = duration_cast<milliseconds>(end - start);
-            // int sleepTime = max(33 - (int)duration.count(), 1); // Maintain ~30FPS
-            // std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-            // std::this_thread::sleep_for(milliseconds(sleepTime));
-            // std::this_thread::sleep_for(std::chrono::duration<int, std::milli>(sleepTime));
 
         }
         
