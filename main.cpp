@@ -465,9 +465,9 @@ void animation(string name) {
             )" << flush;
 
             #if defined(_WIN32) || defined(_WIN64)
-                Sleep(500); // Delay so the user can see the countdown
+                Sleep(900); // Delay so the user can see the countdown
             #else
-                usleep(500 * 1000);
+                usleep(900 * 1000);
             #endif
 
         } 
@@ -482,9 +482,9 @@ void animation(string name) {
             )" << flush;
 
             #if defined(_WIN32) || defined(_WIN64)
-                Sleep(500); // Delay so the user can see the countdown
+                Sleep(900); // Delay so the user can see the countdown
             #else
-                usleep(500 * 1000);
+                usleep(900 * 1000);
             #endif
 
         } else if(i == 1) {
@@ -498,9 +498,9 @@ void animation(string name) {
             )" << flush;
 
             #if defined(_WIN32) || defined(_WIN64)
-                Sleep(500); // Delay so the user can see the countdown
+                Sleep(900); // Delay so the user can see the countdown
             #else
-                usleep(500 * 1000);
+                usleep(900 * 1000);
             #endif
 
         } else {
@@ -515,9 +515,9 @@ void animation(string name) {
             )" << flush;
             
             #if defined(_WIN32) || defined(_WIN64)
-                Sleep(500); // Delay so the user can see the countdown
+                Sleep(900); // Delay so the user can see the countdown
             #else
-                usleep(500 * 1000);
+                usleep(900 * 1000);
             #endif
 
         }
