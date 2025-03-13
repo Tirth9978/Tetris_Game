@@ -1,82 +1,76 @@
-# 🎮 Tetris Game in C++ (Terminal Version)
+# 🎮 Tetris Game in C++ (IT206 DS Lab - Project 2) 🚀
 
-A **flicker-free** Tetris game written in **C++**, running in the Windows terminal. 🕹️
-This game uses **double buffering** for smooth rendering and **optimized console updates** to avoid screen flickering. 🚀
+## 🔥 Overview
 
----
+This project is a **console-based Tetris game** developed in **C++**, following object-oriented programming principles. The game features **classic Tetris mechanics**, including falling tetrominoes, piece rotation, scoring, and game-over conditions.
 
-## 🌟 Features
-- ✅ **Smooth gameplay** (No flickering, optimized screen updates)
-- 🎨 **Classic 20x10 grid with spacing for better visuals**
-- 🎚️ **Multiple difficulty levels** (Easy, Medium, Hard)
-- 🎯 **Rotating, moving, and hard-dropping tetrominoes**
-- 🏆 **Score tracking** with high-score comparison
-- 🖥️ **Fully playable in the Windows Command Prompt**
+## ✨ Features
 
----
+🎯 **Classic Tetris Gameplay**: Includes seven standard tetrominoes (I, O, T, S, Z, J, L).  
+🎮 **Game Board**: A **10x20** grid representation for smooth gameplay.  
+🔄 **Piece Movements**: Move left, right, rotate, and drop pieces.  
+⚡ **Gravity & Speed Increase**: Tetrominoes fall at a constant speed, increasing as the game progresses.  
+🛑 **Collision Detection**: Prevents pieces from overlapping or moving out of bounds.  
+🏆 **Line Clearing & Scoring**: Full rows are removed, and points are awarded.  
+☠️ **Game Over Detection**: Ends when blocks reach the top.
 
-## 🎮 Controls 🎯
-| 🔑 Key | 🎭 Action |
-|------|----------------|
-| `A` / Left Arrow ⬅️ | Move Left |
-| `D` / Right Arrow ➡️ | Move Right |
-| `S` / Down Arrow ⬇️ | Soft Drop |
-| `Space` ⏬ | Hard Drop |
-| `E` 🔄 | Rotate Right |
-| `Q` 🔄 | Rotate Left |
-| `ESC` ❌ | Quit Game |
+## 🎮 Controls
 
----
+```
+🎯 Left Arrow (←)   : Move left
+🎯 Right Arrow (→)  : Move right
+🎯 Up Arrow (↑)     : Rotate piece
+🎯 Down Arrow (↓)   : Soft drop
+🎯 Spacebar         : Hard drop
+🎯 Escape (ESC)     : Pause or Quit
+```
 
-## 🛠 Installation & Usage 📥
-### 🏁 Windows
-1. **Clone or Download** the repository.
-2. Open a terminal (`cmd` or `PowerShell`).
-3. Compile the code using **MinGW g++**:
+## 🛠️ Installation & Execution
+
+### 📌 Prerequisites
+
+- ✅ **C++ Compiler** (GCC, Clang, or MSVC supporting C++17 or later)
+- ✅ **Make (Optional)**
+
+### 🚀 Steps to Compile & Run
+
+1. **Clone the repository** or download the source files:
    ```sh
-   g++ main.cpp -o tetris.exe -static-libgcc -static-libstdc++
+   git clone https://github.com/your-repository/tetris-game.git
+   cd tetris-game
    ```
-4. Run the game:
+2. **Compile the source code**:
    ```sh
-   tetris.exe
+   g++ main.cpp -o tetris -std=c++17
    ```
-
-### 🐧 Linux
-1. Clone the repository.
-2. Install `g++` if not installed:
+3. **Run the game**:
    ```sh
-   sudo apt install g++
-   ```
-3. Compile and run:
-   ```sh
-   g++ main.cpp -o tetris
    ./tetris
    ```
 
+## 📁 Project Structure
+
+```
+├── main.cpp          # Main source code file
+├── project_2_tetris.pdf  # Project description & requirements
+├── README.md         # Documentation & setup guide
+```
+
+## ⚙️ Technical Details
+
+🔹 Uses **2D vectors** for the game grid representation.  
+🔹 Implements **real-time user input handling** for smooth gameplay.  
+🔹 Supports both **Windows and Linux** platforms with cross-platform compatibility.  
+🔹 **Object-Oriented Design (OOP)** ensures modular and extensible code.  
+
+## 🤝 Contributing
+
+💡 Have ideas or improvements? Fork this repository and submit a pull request! Let's build an even better Tetris together. 🎉
+
 ---
+🚀 **Developed for IT206 Data Structures Lab - Project 2** 🎮
 
-## 🖥️ Gameplay Preview 🎥
-```
-<>  #  #     #  #
-<>  #        #  #
-<>  #  #     #  #
-<>  #        #  #
-```
----
 
-## 📜 Code Explanation 🧑‍💻
-### **Optimized Rendering (No Flickering) 🚀**
-Instead of `system("cls")`, we use:
-```cpp
-WriteConsoleOutput(hConsole, screenBuffer, bufferSize, {0, 0}, &windowSize);
-```
-This method updates only the required part of the screen, making the game smooth.
-
-### **Double Buffering for Efficient Updates**
-The game screen is drawn **in memory first**, then rendered to avoid tearing:
-```cpp
-static CHAR_INFO screenBuffer[22 * 23];
-```
 
 ---
 
