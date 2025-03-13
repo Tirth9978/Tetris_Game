@@ -2,7 +2,6 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
-#include<vector>
 #include<map>
 // #include<windows.h>
 #include <chrono>
@@ -190,12 +189,6 @@ class Main : public Tetrominoes {
 
         void Main_Board(int maxScore) {
 
-            // system(CLEAR);
-            // HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-            // COORD cursorPosition;
-            // cursorPosition.X = 0;
-            // cursorPosition.Y = 0;
-            // SetConsoleCursorPosition(hConsole, cursorPosition);
             system(CLEAR);
             vector<vector<int>> tempBoard = board;
             
@@ -205,7 +198,7 @@ class Main : public Tetrominoes {
                         tempBoard[y+i][x+j] = Piece[i][j];  
                     }
                 }
-            }
+            }   
 
             cout << "<><><><><><><><><><><><>\n";
 
@@ -566,7 +559,7 @@ int main() {
     }
     cout <<"\n\n";
 
-    srand(time(NULL)); // Like Seed For rand() Function;
+    srand(time(NULL)); 
 
     int play = 1;
 
@@ -580,17 +573,12 @@ int main() {
         int maxScore = 0;
         
         while(!game.IsOver()) {
-            // using namespace std::chrono;    
-            // auto start = high_resolution_clock::now();
 
             game.User_Input();
             game.Main_Board(maxScore);
             game.dropPiece();
             game.Com(maxScore);
 
-            // if (game.getScore() % 25 ==0){
-            //     game.SpeedContorl(diff);
-            // }
             
             #if defined(_WIN32) || defined(_WIN64)
                 Sleep(diff);
