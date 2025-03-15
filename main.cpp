@@ -308,9 +308,7 @@ class Main : public Tetrominoes {
             y = 0;
 
             if (!validMove(0,0,Piece)) {
-                // cout << "Over \n";
                 this->isGameOver=1;
-                // exit(0);
             }
         }
 
