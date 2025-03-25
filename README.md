@@ -32,22 +32,6 @@ This project is a **console-based Tetris game** developed in **C++**, following 
 - ✅ **C++ Compiler** (GCC, Clang, or MSVC supporting C++17 or later)
 - ✅ **Make (Optional)**
 
-### 🚀 Steps to Compile & Run
-
-1. **Clone the repository** or download the source files:
-   ```sh
-   git clone https://github.com/your-repository/tetris-game.git
-   cd tetris-game
-   ```
-2. **Compile the source code**:
-   ```sh
-   g++ main.cpp -o tetris -std=c++17
-   ```
-3. **Run the game**:
-   ```sh
-   ./tetris
-   ```
-
 ## 📁 Project Structure
 
 ```
