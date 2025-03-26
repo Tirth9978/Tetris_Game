@@ -147,14 +147,15 @@ class Main : public Tetrominoes {
     public : 
     
         #if defined(_WIN32) || defined(_WIN64)
+
             void Main_Board(int maxScore) {
                 static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-                static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 3}; // Grid size (20x10) with spacing
-                static COORD bufferSize = {22 * 2, 23};  // Buffer size (width + padding)
-                static CHAR_INFO screenBuffer[22 * 2 * 23]; // Screen buffer
+                static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 15}; // Grid size (20x10) with spacing
+                static COORD bufferSize = {22 * 2, 35};  // Buffer size (width + padding)
+                static CHAR_INFO screenBuffer[22 * 2 * 35]; // Screen buffer
 
                 // Clear buffer
-                for (int i = 0; i < 22 * 2 * 23; i++) {
+                for (int i = 0; i < 22 * 2 * 35; i++) {
                     screenBuffer[i].Char.AsciiChar = ' ';
                     screenBuffer[i].Attributes = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE;
                 }
@@ -195,12 +196,30 @@ class Main : public Tetrominoes {
 
                 // Display score
                 string scoreText = "Score: " + to_string(Score);
-                string maxScoreText = "Max: " + to_string(maxScore);
+                string maxScoreText = "High Score: " + to_string(maxScore);
                 for (int i = 0; i < scoreText.size(); i++) {
-                    screenBuffer[(height + 1) * (22 * 2) + 2 + i].Char.AsciiChar = scoreText[i];
+                    screenBuffer[(height + 2) * (22 * 2) + 2 + i].Char.AsciiChar = scoreText[i];
                 }
                 for (int i = 0; i < maxScoreText.size(); i++) {
-                    screenBuffer[(height + 2) * (22 * 2) + 2 + i].Char.AsciiChar = maxScoreText[i];
+                    screenBuffer[(height + 3) * (22 * 2) + 2 + i].Char.AsciiChar = maxScoreText[i];
+                }
+
+                // 🟣 Display controls in **MAGENTA**
+                vector<string> controls = {
+                    "----------------------------",
+                    "| a : Move Left            |",
+                    "| d : Move Right           |",
+                    "| e : Rotate Right         |",
+                    "| q : Rotate Left          |",
+                    "| Space : Hard Drop        |",
+                    "| Esc: Exit                |",
+                    "---------*---------*--------"
+                };
+
+                for (int k = 0; k < controls.size(); k++) {
+                    for (int i = 0; i < controls[k].size(); i++) {
+                        screenBuffer[(height + 5 + k) * (22 * 2) + 4 + i].Char.AsciiChar = controls[k][i];
+                    }
                 }
 
                 // Write buffer to console (flicker-free)
@@ -587,7 +606,7 @@ int main() {
         cout <<"\n\n";
 
         Main game;
-        game.name=str;
+        game.name = str;
 
         animation(str);
         
