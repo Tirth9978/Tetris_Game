@@ -502,24 +502,22 @@ class Main : public Tetrominoes {
         }
 
         void gameOverAnimation() {
-            for (int fade = 0; fade < 5; fade++) {
-                for (int i = 0; i < height; i++) {
+            for (int step = 0; step < height; step++) {
+                for (int i = height - 1; i >= step; i--) {
                     for (int j = 0; j < width; j++) {
-                        board[i][j] = (fade % 2 == 0) ? 1 : 0; // Flash effect
+                        board[i][j] = (i == step) ? 0 : board[i][j];  // Collapse one row at a time
                     }
                 }
-
                 Main_Board(0);
-
+        
                 #if defined(_WIN32) || defined(_WIN64)
-                    Sleep(200);
-
+                    Sleep(50);
                 #else 
-                    usleep(200*1000);
-
+                    usleep(50*1000);
                 #endif 
             }
         }
+        
 };
 
 // Loading Animation part 
