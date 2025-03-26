@@ -562,6 +562,7 @@ int main() {
     srand(time(NULL)); 
 
     int play = 1;
+    int maxScore = 0;
 
     while(play) {
 
@@ -589,8 +590,6 @@ int main() {
         game.name=str;
 
         animation(str);
-
-        int maxScore = 0;
         
         while(!game.IsOver()) {
 
@@ -634,7 +633,7 @@ int main() {
 
         #endif
 
-        // cout << "Your Highest Score : " << max_score << "\n\n\n";
+        cout << "Your Highest Score : " << maxScore << "\n\n\n";
         cout << "\n\nDo You Want To Play Again..?\n\n";
         cout << "NOTE : If You Press Key Other Than 0 or 1 Then Computer will treat it as 0..\n";
         cout << "Enter 1 For \"YES\" and 0 For \"NO\" : ";
