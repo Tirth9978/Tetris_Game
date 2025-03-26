@@ -1,19 +1,39 @@
 # 🎮 Tetris Game in C++ (IT206 DS Lab - Project 2) 🚀
 
+## 📌 Table of Contents
+- [🔥 Overview](#-overview)  
+- [✨ Features](#-features)  
+- [🎮 Controls](#-controls)  
+- [🕹️ Game Mechanics](#-game-mechanics)  
+- [💡 Code Structure & OOP Concepts](#-code-structure--oop-concepts)  
+- [⚙️ Technical Details](#-technical-details)  
+- [🛠️ Installation & Execution](#-installation--execution)  
+- [📁 Project Structure](#-project-structure)  
+- [🚀 Why Play This Tetris?](#-why-play-this-tetris)  
+- [🤝 Collaborators](#-collaborators-)  
+- [📢 Share & Support](#-share--support)  
+- [🚀 Future Enhancements](#-future-enhancements)  
+- [🤝 Contributing](#-contributing)
+
+---
+
 ## 🔥 Overview
 
 This project is a **console-based Tetris game** developed in **C++**, following object-oriented programming principles. The game features **classic Tetris mechanics**, including falling tetrominoes, piece rotation, scoring, and game-over conditions.
 
+---
+
 ## ✨ Features
 
-🎯 **Classic Tetris Gameplay**: Includes seven standard tetrominoes (I, O, T, S, Z, J, L).  
-🎮 **Game Board**: A **10x20** grid representation for smooth gameplay.  
-🔄 **Piece Movements**: Move left, right, rotate, and drop pieces.  
-⚡ **Gravity & Speed Increase**: Tetrominoes fall at a constant speed, increasing as the game progresses.  
-🛑 **Collision Detection**: Prevents pieces from overlapping or moving out of bounds.  
-🏆 **Line Clearing & Scoring**: Full rows are removed, and points are awarded.  
-☠️ **Game Over Detection**: Ends when blocks reach the top.
+- 🎯 **Classic Tetris Gameplay**: Includes seven standard tetrominoes (I, O, T, S, Z, J, L)  
+- 🎮 **Game Board**: A **10x20** grid representation for smooth gameplay  
+- 🔄 **Piece Movements**: Move left, right, rotate, and drop pieces  
+- ⚡ **Gravity & Speed Increase**: Tetrominoes fall at a constant speed, increasing as the game progresses  
+- 🛑 **Collision Detection**: Prevents pieces from overlapping or moving out of bounds  
+- 🧹 **Line Clearing & Scoring**: Full rows are removed, and points are awarded  
+- ☠️ **Game Over Detection**: Ends when blocks reach the top  
 
+---
 ## 🎮 Controls
 
 ```
@@ -24,6 +44,29 @@ This project is a **console-based Tetris game** developed in **C++**, following 
 🎯 Spacebar         : Hard drop
 🎯 Escape (ESC)     : Pause or Quit
 ```
+---
+
+## 🕹️ Game Mechanics
+
+- ⬇️ **Gravity** causes tetrominoes to fall automatically  
+- 🔄 **Rotation** helps fit pieces into gaps  
+- 🧱 **Line clearing** gives points and frees up space  
+- ☠️ **Game Over** occurs when a new piece cannot be placed  
+- 🧠 **Scoring system** rewards speed and precision  
+
+---
+---
+
+## 💡 Code Structure & OOP Concepts
+
+This game is built using Object-Oriented Programming for clean and modular code:
+
+- 🧱 `Tetromino` class: Manages shape, rotation, and current state  
+- 🗃️ `Board` class: Handles grid, line clearing, collision detection  
+- 🎮 `Game` class: Controls game loop, score, timing, and rendering  
+- 🎯 Encapsulation and abstraction used for better scalability  
+
+---
 
 ## 🛠️ Installation & Execution
 
