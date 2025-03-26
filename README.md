@@ -1,39 +1,39 @@
 # 🎮 Tetris Game in C++ (IT206 DS Lab - Project 2) 🚀
 
 ## 📌 Table of Contents
-- [🔥 Overview](#-overview)  
-- [✨ Features](#-features)  
-- [🎮 Controls](#-controls)  
-- [🕹️ Game Mechanics](#-game-mechanics)  
-- [💡 Code Structure & OOP Concepts](#-code-structure--oop-concepts)  
-- [⚙️ Technical Details](#-technical-details)  
-- [🛠️ Installation & Execution](#-installation--execution)  
-- [📁 Project Structure](#-project-structure)  
-- [🚀 Why Play This Tetris?](#-why-play-this-tetris)  
-- [🤝 Collaborators](#-collaborators-)  
-- [📢 Share & Support](#-share--support)  
-- [🚀 Future Enhancements](#-future-enhancements)  
+- [🔥 Overview](#-overview)
+- [✨ Features](#-features)
+- [🎮 Controls](#-controls)
+- [🕹️ Game Mechanics](#-game-mechanics)
+- [💡 Code Structure & OOP Concepts](#-code-structure--oop-concepts)
+- [⚙️ Technical Details](#-technical-details)
+- [🛠️ Installation & Execution](#-installation--execution)
+- [📁 Project Structure](#-project-structure)
+- [🚀 Why Play This Tetris?](#-why-play-this-tetris)
+- [🤝 Collaborators](#-collaborators)
+- [📢 Share & Support](#-share--support)
 - [🤝 Contributing](#-contributing)
 
 ---
 
 ## 🔥 Overview
 
-This project is a **console-based Tetris game** developed in **C++**, following object-oriented programming principles. The game features **classic Tetris mechanics**, including falling tetrominoes, piece rotation, scoring, and game-over conditions.
+A **console-based Tetris game** developed in **C++** using **Object-Oriented Programming (OOP)** principles. It includes the classic Tetris gameplay: falling tetrominoes, rotation, scoring, and a game-over state.
 
 ---
 
 ## ✨ Features
 
-- 🎯 **Classic Tetris Gameplay**: Includes seven standard tetrominoes (I, O, T, S, Z, J, L)  
-- 🎮 **Game Board**: A **10x20** grid representation for smooth gameplay  
-- 🔄 **Piece Movements**: Move left, right, rotate, and drop pieces  
-- ⚡ **Gravity & Speed Increase**: Tetrominoes fall at a constant speed, increasing as the game progresses  
-- 🛑 **Collision Detection**: Prevents pieces from overlapping or moving out of bounds  
-- 🧹 **Line Clearing & Scoring**: Full rows are removed, and points are awarded  
-- ☠️ **Game Over Detection**: Ends when blocks reach the top  
+- 🎯 **Classic Tetrominoes**: Seven standard shapes — I, O, T, S, Z, J, L  
+- 🧱 **Game Board**: 10×20 grid with smooth rendering  
+- 🔄 **Piece Control**: Move left/right, rotate, soft drop, hard drop  
+- ⚡ **Dynamic Speed**: Game speed increases with time  
+- 🛑 **Collision Handling**: Prevents out-of-bounds or overlapping moves  
+- 🧹 **Line Clearing**: Full rows are cleared for points  
+- ☠️ **Game Over Detection**: Ends the game when the board fills up  
 
 ---
+
 ## 🎮 Controls
 
 ```
@@ -46,34 +46,52 @@ This project is a **console-based Tetris game** developed in **C++**, following 
 ```
 ---
 
-## 🕹️ Game Mechanics
-
-- ⬇️ **Gravity** causes tetrominoes to fall automatically  
-- 🔄 **Rotation** helps fit pieces into gaps  
-- 🧱 **Line clearing** gives points and frees up space  
-- ☠️ **Game Over** occurs when a new piece cannot be placed  
-- 🧠 **Scoring system** rewards speed and precision  
 
 ---
+
+## 🕹️ Game Mechanics
+
+- ⬇️ Tetrominoes fall automatically due to gravity  
+- 🔄 Rotate pieces to fit gaps efficiently  
+- 🧱 Clear lines for points and to avoid a pile-up  
+- ☠️ Game ends when a new piece can’t be placed  
+- 🧠 Score increases with each line cleared and quicker reactions  
+
 ---
 
 ## 💡 Code Structure & OOP Concepts
 
-This game is built using Object-Oriented Programming for clean and modular code:
+Organized using core **OOP principles**:
 
-- 🧱 `Tetromino` class: Manages shape, rotation, and current state  
-- 🗃️ `Board` class: Handles grid, line clearing, collision detection  
-- 🎮 `Game` class: Controls game loop, score, timing, and rendering  
-- 🎯 Encapsulation and abstraction used for better scalability  
+- `Tetromino` class → Handles shape, rotation, and position  
+- `Board` class → Manages the game grid, line clearing, and collisions  
+- `Game` class → Controls game loop, rendering, scoring, and input  
+- Concepts Used: **Encapsulation**, **Abstraction**, and **Modularity**  
+
+---
+
+## ⚙️ Technical Details
+
+- 📦 Game grid implemented using **2D vectors**  
+- 🕹️ Real-time keyboard input for responsive controls  
+- 🖥️ Cross-platform: works on **Windows and Linux terminals**  
+- 🧱 Designed with **C++17** or later standards for better structure  
 
 ---
 
 ## 🛠️ Installation & Execution
 
-### 📌 Prerequisites
+### ✅ Prerequisites
+- C++ Compiler (e.g., **GCC**, **Clang**, **MSVC**)
+- Optional: `make` utility for automated compilation
 
-- ✅ **C++ Compiler** (GCC, Clang, or MSVC supporting C++17 or later)
-- ✅ **Make (Optional)**
+### ▶️ Steps
+1. Clone or download the repository  
+2. Compile the code using your C++ compiler  
+3. Run the executable in a terminal window  
+4. Enjoy the game!
+
+---
 
 ## 📁 Project Structure
 
@@ -83,45 +101,34 @@ This game is built using Object-Oriented Programming for clean and modular code:
 ├── README.md         # Documentation & setup guide
 ```
 
-## ⚙️ Technical Details
 
-🔹 Uses **2D vectors** for the game grid representation.  
-🔹 Implements **real-time user input handling** for smooth gameplay.  
-🔹 Supports both **Windows and Linux** platforms with cross-platform compatibility.  
-🔹 **Object-Oriented Design (OOP)** ensures modular and extensible code.  
+---
+
+## 🚀 Why Play This Tetris?
+
+- 💡 No flickering = **ultra-smooth gameplay**
+- 🧩 Works in terminal (Windows/Linux) — no graphics required
+- 🎵 Retro feel with modern code design
+- ⏱️ Reflex-building and addictive
+- ⚡ Quick install — just compile and play!
+
+---
+
+## 🤝 Collaborators
+
+- 👨‍💻 **Tirth Patel** (202401157)  
+- 👨‍💻 **Raj Patel** (202401152)  
+- 👨‍💻 **Shlok Patel** (202401156)
+- 👨‍💻 **Prakriti Pandey** (202401164)
+- 
+---
+
+## 📢 Share & Support
+
+If you liked this project, give it a ⭐ and share it with your friends!
+
+---
 
 ## 🤝 Contributing
 
-💡 Have ideas or improvements? Fork this repository and submit a pull request! Let's build an even better Tetris together. 🎉
-
----
-🚀 **Developed for IT206 Data Structures Lab - Project 2** 🎮
-
-
-
----
-
-## 🤝 Collaborators 🏆
-- 👨‍💻 **Tirth Patel (202401157)**
-- 👨‍💻 **Raj Patel (202401152)**
-- 👨‍💻 **Shlok Patel (202401156)**
-- 👨‍💻 **Prakriti Pandey (202401164)**
-- 👏 **Special thanks to all contributors!**
-
-
-
----
-
-## 🚀 Why Play This Tetris? 🔥
-- No flickering issues, making it **super smooth** 🏎️
-- Works directly in **Windows & Linux terminals** 📟
-- Classic **Tetris mechanics** for a nostalgic experience 🎵
-- **Easy to install and play** – just **compile & run** 🎯
-- Improve your reflexes and **challenge yourself!** 🏆
-
----
-
-## 📢 Share & Support ❤️
-If you like this project, **star the repository**, share it with your friends, and enjoy endless Tetris fun! 🎉
-
-**Happy Coding & Gaming! 🎮🔥**
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
