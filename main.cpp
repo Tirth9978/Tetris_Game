@@ -25,7 +25,7 @@ Makers :
 #include <cstdlib>
 #include <ctime>
 #include<map>
-// #include<windows.h>
+#include<windows.h>
 #include <chrono>
 #include <thread>
 
@@ -559,31 +559,31 @@ int main() {
     cout << "\n\nEnter your Name : ";
     getline(cin, str);
 
-    int diff = 0;
-
-    cout << "\n\n";
-    cout << "Difficulty Levels : " << endl;
-    cout << "1. Easy\n2. Medium\n3. Hard\n\n";
-    cout << "NOTE : If You Press Key Other than 1, 2 or 3 then Difficulty Will Set Automatically to Medium..\n\n";
-    cout << "Set Difficulty Level : ";
-    cin >> diff;
-
-    if(diff == 3) {
-        diff = 200;
-    } else if(diff == 2) {
-        diff = 300;
-    } else if(diff == 1) {
-        diff = 400;
-    } else {
-        diff = 300;
-    }
-    cout <<"\n\n";
-
     srand(time(NULL)); 
 
     int play = 1;
 
     while(play) {
+
+        int diff = 0;
+
+        cout << "\n\n";
+        cout << "Difficulty Levels : " << endl;
+        cout << "1. Easy\n2. Medium\n3. Hard\n\n";
+        cout << "NOTE : If You Press Key Other than 1, 2 or 3 then Difficulty Will Set Automatically to Medium..\n\n";
+        cout << "Set Difficulty Level : ";
+        cin >> diff;
+
+        if(diff == 3) {
+            diff = 200;
+        } else if(diff == 2) {
+            diff = 300;
+        } else if(diff == 1) {
+            diff = 400;
+        } else {
+            diff = 300;
+        }
+        cout <<"\n\n";
 
         Main game;
         game.name=str;
