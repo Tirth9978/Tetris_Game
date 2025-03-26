@@ -153,7 +153,7 @@ class Main : public Tetrominoes {
     
         #if defined(_WIN32) || defined(_WIN64)
 
-            void Main_Board(int maxScore) {
+            void Main_Board(int maxScore, bool isPaused = false) {
                 static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
                 static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 15}; // Grid size (20x10) with spacing
@@ -213,23 +213,47 @@ class Main : public Tetrominoes {
                     screenBuffer[(height + 3) * (22 * 2) + 2 + i].Char.AsciiChar = maxScoreText[i];
                 }
 
-                // 🟣 Display controls in **MAGENTA**
-                vector<string> controls = {
-                    "----------------------------",
-                    "| a : Move Left            |",
-                    "| d : Move Right           |",
-                    "| e : Rotate Right         |",
-                    "| q : Rotate Left          |",
-                    "| Space : Hard Drop        |",
-                    "| Esc: Exit                |",
-                    "---------*---------*--------"
-                };
-
-                for (int k = 0; k < controls.size(); k++) {
-                    for (int i = 0; i < controls[k].size(); i++) {
-                        screenBuffer[(height + 5 + k) * (22 * 2) + 4 + i].Char.AsciiChar = controls[k][i];
+                if (isPaused) {
+                    vector<string> pauseText = {
+                        "G A M E  P A U S E D !!",
+                        "Press 'r' To Resume !!"
+                    };
+                
+                    int pauseRow = height + 5; // Place text at the bottom (where controls are)
+                    int centerCol = (width * 2 - pauseText[0].size()) / 2; // Center text
+                
+                    for (int line = 0; line < pauseText.size(); line++) {
+                        for (int i = 0; i < pauseText[line].size(); i++) {
+                            int index = (pauseRow + line) * (22 * 2) + centerCol + i;
+                            if (index >= 0 && index < (22 * 2 * 35)) { // Prevent out-of-bounds issues
+                                screenBuffer[index].Char.AsciiChar = pauseText[line][i];
+                                screenBuffer[index].Attributes = FOREGROUND_RED | FOREGROUND_INTENSITY;
+                            }
+                        }
                     }
-                }
+                } else {
+                    // Restore Controls when game is NOT paused
+                    vector<string> controls = {
+                        "----------------------------",
+                        "| a : Move Left            |",
+                        "| d : Move Right           |",
+                        "| e : Rotate Right         |",
+                        "| q : Rotate Left          |",
+                        "| Space : Hard Drop        |",
+                        "| Esc: Exit                |",
+                        "---------*---------*--------"
+                    };
+                
+                    int controlRow = height + 5; // Same position as pause message
+                    for (int k = 0; k < controls.size(); k++) {
+                        for (int i = 0; i < controls[k].size(); i++) {
+                            int index = (controlRow + k) * (22 * 2) + 4 + i;
+                            if (index >= 0 && index < (22 * 2 * 35)) {
+                                screenBuffer[index].Char.AsciiChar = controls[k][i];
+                            }
+                        }
+                    }
+                }                                             
 
                 // Write buffer to console (flicker-free)
                 WriteConsoleOutput(hConsole, screenBuffer, bufferSize, {0, 0}, &windowSize);
@@ -454,31 +478,62 @@ class Main : public Tetrominoes {
 
         void User_Input() {
 
+            static auto lastMove = chrono::steady_clock::now();
+            static auto lastDrop = chrono::steady_clock::now();
+
+            static bool paused = false;
+
             if (_kbhit()) {
                 
+                auto now = chrono::steady_clock::now();
+
                 char ch = _getch();
 
-                if (ch == 27) {
-                    this->isGameOver = 1;
+                if (ch == 'p') {  
+                    paused = !paused;
+
+                    while (paused) {
+                        Main_Board(0, true);  // Keep rendering while paused
+                        // std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                        if (_kbhit() && _getch() == 'r') {
+                            paused = false;
+                            Main_Board(0, false);
+                            break;
+                        }
+                    }
                 }
-                if (ch == 'a' || ch == 75) {
-                    movePiece(-1);
+                else {
+                    if (ch == 27) {
+                        this->isGameOver = 1;
+                    }
+                    if ((ch == 'a' || ch == 75) && now - lastMove > chrono::milliseconds(100)) {
+                        movePiece(-1);
+                        lastMove = now;
+                    }
+                    if ((ch == 'd' || ch == 77) && now - lastMove > chrono::milliseconds(100)) {
+                        movePiece(1);
+                        lastMove = now;
+                    }
+                    if ((ch == 's' || ch == 80) && now - lastMove > chrono::milliseconds(100)) {
+                        dropPiece();
+                        lastMove = now;
+                    }
+                    if (ch == 'e') {
+                        rotatePiece(false);  // Rotate right
+                    }
+                    if (ch == 'q') {
+                        rotatePiece(true); // Rotate left
+                    }
+                    if (ch == ' ') {
+                        hardDrop();
+                    }
                 }
-                if (ch == 'd' || ch == 77) {
-                    movePiece(1);
-                }
-                if (ch == 's' || ch == 80) {
-                    dropPiece();
-                }
-                if (ch == 'e') {
-                    rotatePiece(false);  // Rotate right
-                }
-                if (ch == 'q') {
-                    rotatePiece(true); // Rotate left
-                }
-                if (ch == ' ') {
-                    hardDrop();
-                }
+            }
+
+             // Auto-drop every 500ms (to make falling more responsive)
+            if (chrono::steady_clock::now() - lastDrop > chrono::milliseconds(500)) {
+                dropPiece();
+                lastDrop = chrono::steady_clock::now();
             }
         }
 
