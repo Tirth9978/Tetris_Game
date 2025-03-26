@@ -397,6 +397,15 @@ class Main : public Tetrominoes {
         void hardDrop() {
             while (validMove(0, 1)) {  
                 y++;
+                Main_Board(0);
+                
+                #if defined(_WIN32) || defined(_WIN64)
+                Sleep(50);
+
+                #else 
+                    usleep(50*1000);
+
+                #endif
             }
 
             placePiece();
