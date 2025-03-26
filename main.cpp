@@ -282,26 +282,51 @@ class Main : public Tetrominoes {
 
         #endif 
         
+        void animateLineClear(vector<int> rows) {
+            if (rows.empty()) return;  // No rows to clear, exit function
+        
+            for (int flash = 0; flash < 3; flash++) {  
+                for (int i : rows) {
+                    for (int j = 0; j < width; j++) {
+                        board[i][j] = (flash % 2 == 0) ? 0 : 1; // Flash effect only on full rows
+                    }
+                }
 
+                Main_Board(0); // Refresh the board
+                
+                #if defined(_WIN32) || defined(_WIN64)
+                    Sleep(150);
+
+                #else 
+                    usleep(150*1000);
+
+                #endif
+            }
+        }
+        
         void clearFullRows() {
+            vector<int> fullRows;  // Store indices of full rows
+        
             for (int i = height - 1; i >= 0; i--) {
                 bool fullRow = true;
-
                 for (int j = 0; j < width; j++) {
                     if (board[i][j] == 0) {
                         fullRow = false;
                         break;
                     }
                 }
-
-                if (fullRow) {
-                    board.erase(board.begin() + i);
-                    board.insert(board.begin(), vector<int>(width, 0));
-                    this->Score += 5;
-                    i++; 
-                }
+                if (fullRow) fullRows.push_back(i);
+            }
+        
+            animateLineClear(fullRows); // Now only flash the full rows
+        
+            for (int i : fullRows) {
+                board.erase(board.begin() + i);
+                board.insert(board.begin(), vector<int>(width, 0));
+                this->Score += 5;
             }
         }
+        
 
         bool validMove(int dx,int dy,vector<vector<int>> newPiece = {}) {
             if (newPiece.empty()) {
@@ -475,6 +500,26 @@ class Main : public Tetrominoes {
         int getScore() {
             return this->Score;
         }
+
+        void gameOverAnimation() {
+            for (int fade = 0; fade < 5; fade++) {
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        board[i][j] = (fade % 2 == 0) ? 1 : 0; // Flash effect
+                    }
+                }
+
+                Main_Board(0);
+
+                #if defined(_WIN32) || defined(_WIN64)
+                    Sleep(200);
+
+                #else 
+                    usleep(200*1000);
+
+                #endif 
+            }
+        }
 };
 
 // Loading Animation part 
@@ -585,6 +630,21 @@ void animation(string name) {
         // #endif
     }
     system(CLEAR);
+
+    cout << "\n\n\n";
+    cout << "          ***********************************************\n\n";
+    cout << "                    T E T R I S  G A M E\n\n";
+    cout << "          ***********************************************\n\n\n";
+
+    // system(CLEAR);
+
+    #if defined(_WIN32) || defined(_WIN64)
+        Sleep(400);
+    #else
+         usleep(400 * 1000);
+    #endif
+
+    system(CLEAR);
 }
 
 int main() {
@@ -652,6 +712,8 @@ int main() {
 
         }
         
+        game.gameOverAnimation();
+
         system(CLEAR);
 
         cout << "\n\n\n";
