@@ -54,6 +54,7 @@ using namespace std ;
         tcgetattr(STDIN_FILENO, &oldt);
         newt = oldt;
         newt.c_lflag &= ~(ICANON | ECHO);
+
         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
         oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
         fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
@@ -67,15 +68,18 @@ using namespace std ;
             ungetc(ch, stdin);
             return 1;
         }
+
         return 0;
     }
 
      int _getch() {
           struct termios oldt, newt;
           int ch;
+
           tcgetattr(STDIN_FILENO, &oldt);
           newt = oldt;
           newt.c_lflag &= ~(ICANON | ECHO);
+
           tcsetattr(STDIN_FILENO, TCSANOW, &newt);
           ch = getchar();
 
@@ -98,11 +102,11 @@ using namespace std ;
 
 class Game {
 	protected : 
-		int width ;
-		int height ;
-		vector<vector<int>> board ;
-		int Score ;
-		bool isGameOver ;
+		int width;
+		int height;
+		vector<vector<int>> board;
+		int Score;
+		bool isGameOver;
         
 
 	public :
@@ -131,7 +135,8 @@ class Tetrominoes : public Game {
 		};
 
 		int curPiece;
-		int x , y;
+		int x;
+        int y;
 		vector<vector<int>> Piece;
 
 	public :
@@ -150,6 +155,7 @@ class Main : public Tetrominoes {
 
             void Main_Board(int maxScore) {
                 static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
                 static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 15}; // Grid size (20x10) with spacing
                 static COORD bufferSize = {22 * 2, 35};  // Buffer size (width + padding)
                 static CHAR_INFO screenBuffer[22 * 2 * 35]; // Screen buffer
@@ -165,6 +171,7 @@ class Main : public Tetrominoes {
                     screenBuffer[i * (22 * 2)].Char.AsciiChar = '<';
                     screenBuffer[i * (22 * 2) + width * 2 + 1].Char.AsciiChar = '>';
                 }
+
                 for (int i = 0; i < width * 2 + 2; i++) {
                     screenBuffer[i].Char.AsciiChar = '<';
                     screenBuffer[(height) * (22 * 2) + i].Char.AsciiChar = '>';
@@ -187,6 +194,7 @@ class Main : public Tetrominoes {
                         if (Piece[i][j]) {
                             int posX = x + j;
                             int posY = y + i;
+
                             screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Char.AsciiChar = '#';
                             screenBuffer[posY * (22 * 2) + (posX * 2) + 2].Char.AsciiChar = ' ';  // Add space between blocks
                             screenBuffer[posY * (22 * 2) + (posX * 2) + 1].Attributes = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
@@ -197,6 +205,7 @@ class Main : public Tetrominoes {
                 // Display score
                 string scoreText = "Score: " + to_string(Score);
                 string maxScoreText = "High Score: " + to_string(maxScore);
+
                 for (int i = 0; i < scoreText.size(); i++) {
                     screenBuffer[(height + 2) * (22 * 2) + 2 + i].Char.AsciiChar = scoreText[i];
                 }
@@ -295,7 +304,9 @@ class Main : public Tetrominoes {
         }
 
         bool validMove(int dx,int dy,vector<vector<int>> newPiece = {}) {
-            if (newPiece.empty()) newPiece = Piece;
+            if (newPiece.empty()) {
+                newPiece = Piece;
+            }
 
             for (int i=0; i<Piece.size(); i++) {
                 for (int j=0; j<Piece[i].size(); j++) {
@@ -519,7 +530,8 @@ void animation(string name) {
                 usleep(900 * 1000);
             #endif
 
-        } else if(i == 1) {
+        }
+        else if(i == 1) {
             cout << R"(
                                           _ 
                                          / |
@@ -535,7 +547,8 @@ void animation(string name) {
                 usleep(900 * 1000);
             #endif
 
-        } else {
+        }
+        else {
             system(CLEAR);
             cout << "\n\n\n\n\n\n" R"(
                           _____   _______      __      _____     _______ 
@@ -566,6 +579,7 @@ void animation(string name) {
 }
 
 int main() {
+
     // cout << "\033[2J\033[H";
     system(CLEAR);
 
@@ -574,9 +588,9 @@ int main() {
     cout << "                                 W E L C O M E  T O  T E T R I S  G A M E ! !\n\n";
     cout << "          **************************************************************************************\n\n\n\n";
     
-    string str;
+    string name;
     cout << "\n\nEnter your Name : ";
-    getline(cin, str);
+    getline(cin, name);
 
     srand(time(NULL)); 
 
@@ -606,9 +620,9 @@ int main() {
         cout <<"\n\n";
 
         Main game;
-        game.name = str;
+        game.name = name;
 
-        animation(str);
+        animation(name);
         
         while(!game.IsOver()) {
 
