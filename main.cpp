@@ -25,7 +25,7 @@ Makers :
 #include <cstdlib>
 #include <ctime>
 #include<map>
-#include<windows.h>
+//#include<windows.h>
 #include <chrono>
 #include <thread>
 
@@ -262,7 +262,7 @@ class Main : public Tetrominoes {
 
         #else 
 
-        void Main_Board(int maxScore) {
+        void Main_Board(int maxScore, bool isPaused = false) {
 
             system(CLEAR);
             vector<vector<int>> tempBoard = board;
@@ -298,11 +298,30 @@ class Main : public Tetrominoes {
 
                 if (i==7) cout << "      | "<<this->name<<"'s Score : " << this->Score ;
                 if (i==8) cout << "      | "<<this->name<<"'s MaxScore : " << maxScore ;
-
+                if (isPaused && i == 10) {
+                    cout << "      | [GAME PAUSED] Press 'r' to Resume  |";
+                }
                 cout << endl;
             }
 
             cout << "<><><><><><><><><><><><>\n";
+            while(isPaused){
+                // if (_kbhit()){
+                //     // auto now = chrono::steady_clock::now();
+
+                //     char ch = _getch();
+                //     if (ch == 'r' || ch == 'R'){
+                //         break;
+                //     }
+                //     else {
+                //         this->Main_Board(maxScore,1);
+                //     }
+                // }
+                if(_kbhit() && _getch() == 'r'){
+                    isPaused = 0;
+                    break;
+                }
+            }
         } 
 
         #endif 
@@ -753,7 +772,9 @@ int main() {
             game.Main_Board(maxScore);
             game.dropPiece();
             game.Com(maxScore);
-
+            if (game.getScore() % 25 == 0 && game.getScore() != 0){
+                game.SpeedContorl(diff);
+            }
             
             #if defined(_WIN32) || defined(_WIN64)
                 Sleep(diff);
