@@ -248,7 +248,7 @@ class Main : public Tetrominoes {
                     int controlRow = height + 5; // Same position as pause message
                     for (int k = 0; k < controls.size(); k++) {
                         for (int i = 0; i < controls[k].size(); i++) {
-                            int index = (controlRow + k) * (22 * 2) + 4 + i;
+                            int index = (controlRow + k) * (22 * 2) + 1 + i;
                             if (index >= 0 && index < (22 * 2 * 35)) {
                                 screenBuffer[index].Char.AsciiChar = controls[k][i];
                             }
