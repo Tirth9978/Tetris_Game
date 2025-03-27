@@ -797,6 +797,8 @@ int main() {
 
         cin >> play;
     }
+
+    cout << "\n\nOkay, Thanks You For Playing Tetris..!!! BYE..!!\n\n";
     
     return 0;
 }
