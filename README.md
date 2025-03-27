@@ -16,103 +16,222 @@
 
 ---
 
-## 🔥 Overview
+## 🎮 Tetris Game
 
-A **console-based Tetris game** developed in **C++** using **Object-Oriented Programming (OOP)** principles. It includes the classic Tetris gameplay: falling tetrominoes, rotation, scoring, and a game-over state.
-
----
-
-## ✨ Features
-
-- 🎯 **Classic Tetrominoes**: Seven standard shapes — I, O, T, S, Z, J, L  
-- 🧱 **Game Board**: 10×20 grid with smooth rendering  
-- 🔄 **Piece Control**: Move left/right, rotate, soft drop, hard drop  
-- ⚡ **Dynamic Speed**: Game speed increases with time  
-- 🛑 **Collision Handling**: Prevents out-of-bounds or overlapping moves  
-- 🧹 **Line Clearing**: Full rows are cleared for points  
-- ☠️ **Game Over Detection**: Ends the game when the board fills up  
+Welcome to the **Tetris Game** developed as part of the IT206 - Data Structures Lab at DA-IICT. This project implements a console-based version of the classic Tetris game using **C++** and leverages various data structures and algorithms to manage game logic and rendering efficiently.
 
 ---
 
-## 🎮 Controls
+## 📚 Project Overview
 
-```
-🎯 Left Arrow (←)   : Move left
-🎯 Right Arrow (→)  : Move right
-🎯 Up Arrow (↑)     : Rotate piece
-🎯 Down Arrow (↓)   : Soft drop
-🎯 Spacebar         : Hard drop
-🎯 Escape (ESC)     : Pause or Quit
-```
----
-
+- **Platform:** Console (Terminal-based)  
+- **Supported OS:** Windows & Linux  
+- **Language:** C++  
 
 ---
 
-## 🕹️ Game Mechanics
+## 🧩 Game Features
 
-- ⬇️ Tetrominoes fall automatically due to gravity  
-- 🔄 Rotate pieces left or right to fit gaps efficiently  
-- 🧱 Clear lines for points and to avoid a pile-up  
-- ☠️ Game ends when a new piece can’t be placed  
-- 🧠 Score increases with each line cleared and quicker reactions  
-
----
-
-## 💡 Code Structure & OOP Concepts
-
-Organized using core **OOP principles**:
-
-- `Tetromino` class → Handles shape, rotation, and position  
-- `Board` class → Manages the game grid, line clearing, and collisions  
-- `Game` class → Controls game loop, rendering, scoring, and input  
-- Concepts Used: **Encapsulation**, **Abstraction**, and **Modularity**  
+👉 Classic Tetris functionality with different shapes  
+👉 Real-time piece rotation and movement  
+👉 Score tracking and level progression  
+👉 Game pause and resume feature  
+👉 Terminal-based UI for smooth gameplay  
 
 ---
 
-## ⚙️ Technical Details
+## ⚙️ How to Run
 
-- 📦 Game grid implemented using **2D vectors**  
-- 🕹️ Real-time keyboard input for responsive controls  
-- 🖥️ Cross-platform: works on **Windows and Linux terminals**  
-- 🧱 Designed with **C++17** or later standards for better structure  
-
----
-
-## 🛠️ Installation & Execution
-
-### ✅ Prerequisites
-- C++ Compiler (e.g., **GCC**, **Clang**, **MSVC**)
-- Optional: `make` utility for automated compilation
-
-### ▶️ Steps
-1. Clone or download the repository  
-2. Compile the code using your C++ compiler  
-3. Run the executable in a terminal window  
-4. Enjoy the game!
-
----
-
-## 📁 Project Structure
-
-```
-├── main.cpp          # Main source code file
-├── project_2_tetris.pdf  # Project description & requirements
-├── README.md         # Documentation & setup guide
+1. **Clone the Repository:**
+```bash
+git clone https://github.com/Tirth9978/Tetris_Game.git
 ```
 
+2. **Navigate to the Directory:**
+```bash
+cd Tetris_Game
+```
+
+3. **Compile the Code:**
+```bash
+g++ tetris.cpp -o tetris
+```
+
+4. **Run the Game:**
+```bash
+./tetris
+```
 
 ---
 
-## 🚀 Why Play This Tetris?
+## 🛠️ Data Structures Used
 
-- 💡 No flickering = **ultra-smooth gameplay**
-- 🧩 Works in terminal (Windows/Linux) — no graphics required
-- 🎵 Retro feel with modern code design
-- ⏱️ Reflex-building and addictive
-- ⚡ Quick install — just compile and play!
+### 1. **2D Vector (Board Representation)**
+- **Type:** `vector<vector<int>>`
+- **Purpose:** Stores the game grid where the pieces are placed.
+- **Usage:**
+```cpp
+vector<vector<int>> board(height, vector<int>(width, 0));
+```
+- `height` - Number of rows in the board  
+- `width` - Number of columns in the board  
 
 ---
+
+### 2. **Vector (Piece Representation)**
+- **Type:** `vector<vector<int>>`
+- **Purpose:** Represents the current active Tetris piece.  
+- **Usage:**
+```cpp
+vector<vector<int>> Piece;
+```
+- Used during piece placement and rotation.
+
+---
+
+### 3. **Pair (Piece Positioning)**
+- **Type:** `pair<int, int>`
+- **Purpose:** Tracks the x and y coordinates of the active piece.  
+- **Usage:**
+```cpp
+int x, y;  // Current position of the piece
+```
+
+---
+
+### 4. **Queue (Future Pieces Queue)**
+- **Type:** `queue<vector<vector<int>>>`
+- **Purpose:** Maintains a queue of upcoming pieces.  
+- **Usage:**
+```cpp
+queue<vector<vector<int>>> nextPieces;
+```
+
+---
+
+### 5. **Map (Piece Rotation Management)**
+- **Type:** `map<int, vector<vector<int>>>`
+- **Purpose:** Stores different rotations of each piece for easy access.  
+- **Usage:**
+```cpp
+map<int, vector<vector<int>>> rotations;
+```
+
+---
+
+## 🔢 Key Variables Used
+
+| **Variable** | **Type**              | **Purpose**                           |
+|--------------|----------------------|--------------------------------------|
+| `board`      | `vector<vector<int>>` | Stores the current game board        |
+| `Piece`      | `vector<vector<int>>` | Represents the active piece          |
+| `x, y`       | `int`                 | Position of the current piece        |
+| `width`      | `int`                 | Width of the game board              |
+| `height`     | `int`                 | Height of the game board             |
+| `score`      | `int`                 | Tracks the player's score            |
+| `maxScore`   | `int`                 | Stores the highest score achieved    |
+| `isPaused`   | `bool`                | Checks if the game is paused         |
+| `nextPieces` | `queue<vector<vector<int>>>` | Holds upcoming Tetris pieces |
+| `rotations`  | `map<int, vector<vector<int>>>` | Stores rotations of pieces |
+
+---
+
+## 🔄 Game Logic Overview
+
+1. **Initialization:**
+   - Initializes the board, piece queue, and other variables.
+   - Generates the first piece and sets the starting position.
+
+2. **Piece Movement:**
+   - Handles left, right, and downward movements.
+   - Validates boundary conditions to prevent overlap.
+
+3. **Rotation:**
+   - Uses `RotateLeft()` and `RotateRight()` to change piece orientation.
+   - Ensures rotated piece fits within the grid.
+
+4. **Collision Detection:**
+   - Checks for collision with other pieces or grid boundaries.
+
+5. **Line Clearance:**
+   - Detects full rows and clears them, updating the score.
+
+6. **Game Pause/Resume:**
+   - Toggles game state between paused and active.
+
+---
+
+## 🔄 Piece Rotation Logic
+
+### Rotate Left
+```cpp
+vector<vector<int>> RotateLeft(vector<vector<int>> mat) {
+    int row = mat.size();
+    int col = mat[0].size();
+    vector<vector<int>> temp(col, vector<int>(row));
+
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            temp[col - j - 1][i] = mat[i][j];
+        }
+    }
+    return temp;
+}
+```
+
+---
+
+## 🎯 Score System
+
+- **Single Line Clear:** +100 points  
+- **Double Line Clear:** +300 points  
+- **Triple Line Clear:** +500 points  
+- **Tetris (4 Lines):** +800 points  
+
+---
+
+## 🎨 Terminal UI
+
+- `#` - Represents a filled cell  
+- `.` - Represents an empty cell  
+- `<><>` - Board boundaries  
+
+---
+
+## 📄 File Structure
+
+```
+📦 Tetris_Game
+ └── 💚 tetris.cpp     → Main game logic
+ └── 💚 README.md      → Project documentation
+ └── 💚 Makefile       → Build automation (optional)
+```
+
+---
+
+## 🤝 Contribution Guidelines
+
+- Fork the repo and submit a PR with your changes.  
+- Ensure the code follows best C++ practices.  
+- Add comments and document new functionality.  
+
+---
+
+## 💎 Contact
+
+📌 **Author:** Tirth Patel  
+📌 **GitHub:** [Tirth9978](https://github.com/Tirth9978)  
+
+---
+
+🎉 Enjoy playing Tetris and feel free to contribute or suggest improvements!
+
+---
+
+📆 **SEO Optimized**  
+🔀 **Clear Structure**  
+📖 **Documentation with Proper Formatting**
+
 
 ## 🤝 Collaborators
 
