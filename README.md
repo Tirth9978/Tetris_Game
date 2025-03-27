@@ -52,7 +52,7 @@ A **console-based Tetris game** developed in **C++** using **Object-Oriented Pro
 ## 🕹️ Game Mechanics
 
 - ⬇️ Tetrominoes fall automatically due to gravity  
-- 🔄 Rotate pieces to fit gaps efficiently  
+- 🔄 Rotate pieces left or right to fit gaps efficiently  
 - 🧱 Clear lines for points and to avoid a pile-up  
 - ☠️ Game ends when a new piece can’t be placed  
 - 🧠 Score increases with each line cleared and quicker reactions  
