@@ -144,7 +144,7 @@ class Tetrominoes : public Game {
 			this->curPiece = rand() % (int) tetrominoes.size();
 			Piece = tetrominoes[this->curPiece];
             this->x = (this->width/2)-1;
-            this->y=0;
+            this->y = 1;
 		}
 };
 
@@ -216,8 +216,8 @@ class Main : public Tetrominoes {
 
                 if (isPaused) {
                     vector<string> pauseText = {
-                        "G A M E  P A U S E D !!",
-                        "Press 'r' To Resume !!"
+                        "    G A M E  P A U S E D !!",
+                        "    Press 'r' To Resume !!"
                     };
                 
                     int pauseRow = height + 5; // Place text at the bottom (where controls are)
