@@ -154,6 +154,7 @@ class Main : public Tetrominoes {
         #if defined(_WIN32) || defined(_WIN64)
 
             void Main_Board(int maxScore, bool isPaused = false) {
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
                 static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
                 static SMALL_RECT windowSize = {0, 0, 20 * 2 + 2, 20 + 15}; // Grid size (20x10) with spacing
