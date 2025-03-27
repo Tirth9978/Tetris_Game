@@ -181,12 +181,6 @@ vector<vector<int>> RotateLeft(vector<vector<int>> mat) {
 
 ---
 
-## 🎯 Score System
-
-- **Single Line Clear:** +100 points  
-- **Double Line Clear:** +300 points  
-- **Triple Line Clear:** +500 points  
-- **Tetris (4 Lines):** +800 points  
 
 ---
 
